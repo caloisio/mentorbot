@@ -1,27 +1,42 @@
 import commands2
+
+import ctre
+
 import wpilib
 import wpilib.drive
 import wpimath.kinematics
-from pyfrc.physics.units import units
+#from pyfrc.physics.units import units
 
 import constants
 
+class TalonSrxEncoder(wpilib.Sendable):
+    def __init__(self, motor: ctre.WPI_TalonFX) -> None:
+        super().__init__()
+
+        self.motor = motor
+
+    def initSendable(self, builder: wpilib.SendableBuilder) -> None:
+        builder.setSmartDashboardType("Encoder")
+        builder.addDoubleProperty("Distance", lambda: self.motor.getSelectedSensorPosition(), None)
+        builder.addDoubleProperty("Speed", lambda: self.motor.getSelectedSensorVelocity(), None)
 
 class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
         super().__init__()
 
         self.kinematics = wpimath.kinematics.DifferentialDriveKinematics(
-            constants.kTrackWidth.to(units.meters).magnitude)
+            constants.kTrackWidth)#.to(units.meters).magnitude)
 
-        self.frontLeftMotor = wpilib.PWMVictorSPX(
+        self.frontLeftMotor = ctre.WPI_TalonFX(
             constants.kFrontLeftMotorPort)
-        self.backLeftMotor = wpilib.PWMVictorSPX(
+        self.backLeftMotor = ctre.WPI_TalonFX(
             constants.kBackLeftMotorPort)
-        self.frontRightMotor = wpilib.PWMVictorSPX(
+        self.frontRightMotor = ctre.WPI_TalonFX(
             constants.kFrontRightMotorPort)
-        self.backRightMotor = wpilib.PWMVictorSPX(
+        self.backRightMotor = ctre.WPI_TalonFX(
             constants.kBackRightMotorPort)
+
+        self.frontLeftMotorEncoder = TalonSrxEncoder(self.frontLeftMotor)
 
         # The robot's drive
         self.leftMotors = wpilib.SpeedControllerGroup(
@@ -46,9 +61,9 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # Sets the distance per pulse for the encoders
         self.leftEncoder.setDistancePerPulse(
-            constants.kEncoderDistancePerPulse.to(units.meters / units.count).magnitude)
+            constants.kEncoderDistancePerPulse)#.to(units.meters / units.count).magnitude)
         self.rightEncoder.setDistancePerPulse(
-            constants.kEncoderDistancePerPulse.to(units.meters / units.count).magnitude)
+            constants.kEncoderDistancePerPulse)#.to(units.meters / units.count).magnitude)
 
         # Create the gyro, a sensor which can indicate the heading of the robot relative
         # to a customizable position.
@@ -80,23 +95,23 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
 
         chassisSpeeds = wpimath.kinematics.ChassisSpeeds(
-            (forwardSpeedFactor * constants.kMaxForwardSpeed).to(units.meters /
-                                                                 units.second).magnitude,
-            (sidewaysSpeedFactor * constants.kMaxSidewaysSpeed).to(units.meters /
-                                                                   units.second).magnitude,
-            (rotationSpeedFactor * constants.kMaxRotationAngularSpeed).to(units.radians / units.second).magnitude)
+            (forwardSpeedFactor * constants.kMaxForwardSpeed),#.to(units.meters /
+                                                                 #units.second).magnitude,
+            (sidewaysSpeedFactor * constants.kMaxSidewaysSpeed),#.to(units.meters /
+                                                               #    units.second).magnitude,
+            (rotationSpeedFactor * constants.kMaxRotationAngularSpeed))#.to(units.radians / units.second).magnitude)
 
         self.arcadeDriveWithSpeeds(chassisSpeeds)
 
     def arcadeDriveWithSpeeds(self, chassisSpeeds: wpimath.kinematics.ChassisSpeeds) -> None:
         wheelSpeeds = self.kinematics.toWheelSpeeds(chassisSpeeds)
-        wheelSpeeds.normalize(constants.kMaxWheelSpeed.to(
-            units.meters / units.second).magnitude)
+        wheelSpeeds.normalize(constants.kMaxWheelSpeed)#.to(
+           #units.meters / units.second).magnitude)
         # TODO: wheel speeds as input to PID loop
         self.leftMotors.set(
-            wheelSpeeds.left / constants.kMaxWheelSpeed.to(units.meters / units.second).magnitude)
+            wheelSpeeds.left / constants.kMaxWheelSpeed)#.to(units.meters / units.second).magnitude)
         self.rightMotors.set(
-            wheelSpeeds.right / constants.kMaxWheelSpeed.to(units.meters / units.second).magnitude)
+            wheelSpeeds.right / constants.kMaxWheelSpeed)#.to(units.meters / units.second).magnitude)
 
     def resetEncoders(self) -> None:
         """Resets the drive encoders to currently read a position of 0."""
@@ -113,4 +128,4 @@ class DriveSubsystem(commands2.SubsystemBase):
         Sets the max output of the drive. Useful for scaling the
         drive to drive more slowly.
         """
-        self.drive.setMaxOutput(maxOutputFactor)
+        #self.drive.setMaxOutput(maxOutputFactor)

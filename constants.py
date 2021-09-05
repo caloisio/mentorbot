@@ -6,29 +6,29 @@
 
 import math
 from wpimath.system.plant import DCMotor
-from pyfrc.physics.units import units
+#from pyfrc.physics.units import units
 
 # Physical parameters
 kDriveTrainMotorsPerSide = 2
-kTrackWidth = 30 * units.inches
-kWheelDiameter = 6 * units.inches
+kTrackWidth = 30# * units.inches
+kWheelDiameter = 6# * units.inches
 kWheelRadius = kWheelDiameter / 2
 kWheelCircumference = kWheelDiameter * math.pi
-kWheelDistancePerRevolution = kWheelCircumference / units.revolution
+kWheelDistancePerRevolution = kWheelCircumference# / units.revolution
 kGearingRatio = 8
-kMaxMotorAngularSpeed = DCMotor.falcon500().freeSpeed * \
-    (units.radians / units.seconds)
+kMaxMotorAngularSpeed = DCMotor.falcon500().freeSpeed# * \
+    #(units.radians / units.seconds)
 kMaxWheelAngularSpeed = kMaxMotorAngularSpeed / kGearingRatio
 kMaxWheelSpeed = kWheelDistancePerRevolution * kMaxWheelAngularSpeed
 kMaxForwardSpeed = kMaxWheelSpeed
-kMaxSidewaysSpeed = 0 * units.meters / units.second  # differential drive
-kMaxRotationAngularSpeed = (kMaxWheelSpeed / (kTrackWidth / 2)) * units.radians
+kMaxSidewaysSpeed = 0 #* units.meters / units.second  # differential drive
+kMaxRotationAngularSpeed = (kMaxWheelSpeed / (kTrackWidth / 2))# * units.radians
 
 # Motors
-kFrontLeftMotorPort = 0
-kBackLeftMotorPort = 1
-kFrontRightMotorPort = 2
-kBackRightMotorPort = 3
+kFrontLeftMotorPort = 10
+kFrontRightMotorPort = 12
+kBackLeftMotorPort = 14
+kBackRightMotorPort = 16
 kInvertLeftMotors = False
 kInvertRightMotors = True
 
@@ -38,15 +38,15 @@ kRightEncoderPorts = (2, 3)
 kLeftEncoderReversed = False
 kRightEncoderReversed = True
 
-kEncoderPulsesPerRevolution = 1024 * units.count / units.revolution
+kEncoderPulsesPerRevolution = 1024# * units.count / units.revolution
 # Assumes the encoders are directly mounted on the wheel shafts
 kEncoderDistancePerPulse = kWheelDistancePerRevolution / kEncoderPulsesPerRevolution
 
 # Autonomous
-kAutoDriveDistance = (3 * units.revolutions) * kEncoderPulsesPerRevolution * \
-    kEncoderDistancePerPulse  # three wheel revolutions
-kAutoBackupDistance = 20 * units.inches
-kAutoDistanceThreshold = 6 * units.inches
+kAutoDriveDistance = 3#(3 * units.revolutions) * kEncoderPulsesPerRevolution * \
+    #kEncoderDistancePerPulse  # three wheel revolutions
+kAutoBackupDistance = 20# * units.inches
+kAutoDistanceThreshold = 6# * units.inches
 kAutoDriveSpeedFactor = 0.5
 
 # Operator Interface

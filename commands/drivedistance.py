@@ -5,12 +5,12 @@ import wpimath.geometry
 import math
 
 import constants
-from pyfrc.physics.units import units
+#from pyfrc.physics.units import units
 from subsystems.drivesubsystem import DriveSubsystem
 
 
 class DriveDistance(commands2.CommandBase):
-    @units.wraps(None, (None, units.meters, None, None))
+    #@units.wraps(None, (None, units.meters, None, None))
     def __init__(self, distance, speedFactor, drive: DriveSubsystem) -> None:
         super().__init__()
         self.distance = math.copysign(distance, distance * speedFactor)
@@ -37,4 +37,4 @@ class DriveDistance(commands2.CommandBase):
     def updateDistanceToTarget(self) -> None:
         currentPose = self.drive.odometry.getPose()
         self.distanceToTarget = (currentPose.translation().distance(
-            self.targetPose.translation())) * units.meters
+            self.targetPose.translation()))# * units.meters
