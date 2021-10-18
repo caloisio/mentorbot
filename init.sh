@@ -1,3 +1,5 @@
+#!/bin/sh
+
 PY=$(case $(uname -s) in
     Drawin* | Linux* ) echo "python";;
     * ) echo "py";;
