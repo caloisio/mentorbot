@@ -39,6 +39,12 @@ class HolonomicInput:
         self.rotation = rotation
 
 
+class CameraControl:
+    def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
+        self.leftRight = leftRight
+        self.upDown = upDown
+
+
 class OperatorInterface:
     """
     The controls that the operator(s)/driver(s) interact with
@@ -46,11 +52,14 @@ class OperatorInterface:
 
     def __init__(self) -> None:
         self.xboxController = XboxController(constants.kXboxControllerPort)
-        self.translationController = Joystick(constants.kTranslationControllerPort)
+        self.cameraController = XboxController(constants.kCameraControllerPort)
+        self.translationController = Joystick(
+            constants.kTranslationControllerPort)
         self.rotationController = Joystick(constants.kRotationControllerPort)
 
         self.coordinateModeControl = (
             self.xboxController,
+            # XboxController.Button.kA.value,
             XboxController.Button.kBumperRight.value,
         )
 
@@ -80,22 +89,29 @@ class OperatorInterface:
         #     ),
         # )
 
+        self.cameraControls = CameraControl(Invert(Deadband(lambda: self.cameraController.getX(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)), Invert(
+            Deadband(lambda: self.cameraController.getY(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)))
+
         self.chassisControls = HolonomicInput(
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getY(GenericHID.Hand.kLeftHand),
+                    lambda: self.xboxController.getY(GenericHID.Hand.kLeftHand) * (
+                        self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) - 1) * -0.5,
                     constants.kXboxJoystickDeadband,
                 )
             ),
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getX(GenericHID.Hand.kLeftHand),
+                    lambda: self.xboxController.getX(GenericHID.Hand.kLeftHand) * (
+                        self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) - 1) * -0.5,
                     constants.kXboxJoystickDeadband,
                 )
             ),
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getX(GenericHID.Hand.kRightHand),
+                    #lambda: self.xboxController.getX(GenericHID.Hand.kRightHand),
+                    lambda: self.xboxController.getTriggerAxis(GenericHID.Hand.kLeftHand) * (
+                        self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) - 1) * -0.5,
                     constants.kXboxJoystickDeadband,
                 )
             ),

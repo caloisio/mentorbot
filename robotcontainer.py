@@ -2,6 +2,7 @@ import wpilib
 
 import commands2
 import commands2.button
+from commands.rotatecamera import RotateCamera
 
 import constants
 
@@ -10,6 +11,7 @@ from commands.drivedistance import DriveDistance
 from commands.defaultdrive import DefaultDrive
 from commands.fieldrelativedrive import FieldRelativeDrive
 from commands.resetdrive import ResetDrive
+from subsystems.cameracontroller import CameraSubsystem
 
 from subsystems.drivesubsystem import DriveSubsystem
 
@@ -31,6 +33,7 @@ class RobotContainer:
 
         # The robot's subsystems
         self.drive = DriveSubsystem()
+        self.camera = CameraSubsystem()
 
         # Autonomous routines
 
@@ -65,6 +68,9 @@ class RobotContainer:
                 self.operatorInterface.chassisControls.rotation,
             )
         )
+
+        self.camera.setDefaultCommand(RotateCamera(
+            self.camera, self.operatorInterface.cameraControls.leftRight, self.operatorInterface.cameraControls.upDown))
 
     def configureButtonBindings(self):
         """

@@ -282,9 +282,18 @@ kAutoDriveSpeedFactor = 0.5
 kXboxControllerPort = 0
 kTranslationControllerPort = 1
 kRotationControllerPort = 2
+kCameraControllerPort = 1
 
 kXboxJoystickDeadband = 0.1
 """dimensionless"""
 
 kKeyboardJoystickDeadband = 0.0
 """dimensionless"""
+
+# PWM camera controller
+kPWMCameraSwerveLeftRight = 0
+"""direct port number on the RoboRIO itself"""
+kPWMCameraSwerveUpDown = 1
+
+kPWMCameraLeftRightInverted = True
+kPWMCameraUpDownInverted = False
