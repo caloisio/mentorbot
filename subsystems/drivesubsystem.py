@@ -1,3 +1,4 @@
+from math import cos, sin
 from commands2 import SubsystemBase
 from wpilib import Encoder, PWMVictorSPX, RobotBase, Timer
 from ctre import (
@@ -18,6 +19,7 @@ from wpimath.kinematics import (
     SwerveDrive4Odometry,
 )
 from enum import Enum, auto
+from typing import Tuple
 import constants
 
 
@@ -425,6 +427,8 @@ class DriveSubsystem(SubsystemBase):
         self.printTimer = Timer()
         # self.printTimer.start()
 
+        self.returnPos = Pose2d(0, 0, 0)
+
     def resetSwerveModules(self):
         for module in self.modules:
             module.reset()
@@ -528,3 +532,19 @@ class DriveSubsystem(SubsystemBase):
         self.frontRightModule.applyState(frontRightState)
         self.backLeftModule.applyState(backLeftState)
         self.backRightModule.applyState(backRightState)
+
+    def rotatePoint(self, x: float, y: float, angle: float, ccw: bool) -> Tuple[float, float]:
+        invert = ccw*2 - 1
+
+        xNew = x*cos(angle) - y*sin(angle)*invert
+        yNew = x*sin(angle) + y*cos(angle)*invert
+        return xNew, yNew
+
+    def shiftPoint(self, savedPose: Pose2d, currentPose: Pose2d) -> Pose2d:
+        xDelta = savedPose.X() - currentPose.X() 
+        yDelta = savedPose.Y() - currentPose.Y() 
+
+        coords = self.rotatePoint(xDelta, yDelta, currentPose.rotation().radians() * -1, True)
+
+        return Pose2d(coords[0], coords[1], 0)
+        

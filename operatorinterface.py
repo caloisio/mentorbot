@@ -38,6 +38,10 @@ class HolonomicInput:
         self.sideToSide = sideToSide
         self.rotation = rotation
 
+class CameraControl:
+    def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
+        self.leftRight = leftRight
+        self.upDown = upDown
 
 class OperatorInterface:
     """
@@ -53,6 +57,21 @@ class OperatorInterface:
         self.translationController = Joystick(
             constants.kTranslationControllerPort)
         self.rotationController = Joystick(constants.kRotationControllerPort)
+        
+        self.scaler = lambda: (self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) -1 ) * -1
+        self.rotation = lambda: self.xboxController.getX(GenericHID.Hand.kRightHand)
+
+        self.returnPositionInput = (
+            self.xboxController,
+            180,
+            0 
+        )
+
+        self.returnModeControl = (
+            self.xboxController,
+            0, 
+            0
+        )
 
         self.coordinateModeControl = (self.xboxController,
                                       defaultControls["fieldRelative"])
@@ -85,19 +104,20 @@ class OperatorInterface:
             Invert(
                 Deadband(
                     lambda: self.xboxController.getRawAxis(defaultControls[
-                        "forwardsBackwards"]),
+                        "forwardsBackwards"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
             Invert(
                 Deadband(
                     lambda: self.xboxController.getRawAxis(defaultControls[
-                        "sideToSide"]),
+                        "sideToSide"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
             Invert(
                 Deadband(
                     lambda: self.xboxController.getRawAxis(defaultControls[
-                        "rotation"]),
+                        "rotation"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
         )
+
