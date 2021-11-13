@@ -58,6 +58,7 @@ Code for the FRC 1757 teaching platform robot
 | front_right_encoder | sensors | 40 - 59 | 41 |
 | back_left_encoder | sensors | 40 - 59 | 42 |
 | back_right_encoder | sensors | 40 - 59 | 43 |
+| lights | IO | 60-70 | 60 | 
 
 #### Configure network devices
 | Device | IP Address | Subnet Mask |
