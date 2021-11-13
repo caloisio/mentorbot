@@ -15,6 +15,10 @@ from commands.fieldrelativedrive import FieldRelativeDrive
 from commands.resetdrive import ResetDrive
 from subsystems.cameracontroller import CameraSubsystem
 
+from commands.returndrive import ReturnDrive
+
+from commands.setreturn import SetReturn
+
 from subsystems.drivesubsystem import DriveSubsystem
 
 from operatorinterface import OperatorInterface
@@ -44,7 +48,7 @@ class RobotContainer:
         # self.light2.setRaw(65535)
 
         self.light = WPI_TalonSRX(constants.kBackLightControllerDeviceID)
-
+        
         # Autonomous routines
 
         # A simple auto routine that drives forward a specified distance, and then stops.
@@ -99,9 +103,18 @@ class RobotContainer:
             )
         )
 
+
         commands2.button.JoystickButton(
             *self.operatorInterface.resetSwerveControl
         ).whenPressed(ResetDrive(self.drive))
+    
+        commands2.button.POVButton(
+            *self.operatorInterface.returnPositionInput
+        ).whenPressed(SetReturn(self.drive))
+
+        commands2.button.POVButton(
+            *self.operatorInterface.returnModeControl
+        ).whileHeld(ReturnDrive(self.drive, self.operatorInterface.scaler, self.operatorInterface.rotation))
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl

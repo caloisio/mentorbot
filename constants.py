@@ -304,3 +304,4 @@ kHorn2PWMPinLocation = 3
 
 # Light controls
 kBackLightControllerDeviceID = 60
+

@@ -2,9 +2,9 @@ from wpilib import Joystick, XboxController
 from wpilib.interfaces import GenericHID
 
 import typing
+import yaml
 
 import constants
-
 
 AnalogInput = typing.Callable[[], float]
 
@@ -45,6 +45,10 @@ class HolonomicInput:
         self.sideToSide = sideToSide
         self.rotation = rotation
 
+class CameraControl:
+    def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
+        self.leftRight = leftRight
+        self.upDown = upDown
 
 class CameraControl:
     def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
@@ -56,23 +60,32 @@ class OperatorInterface:
     """
     The controls that the operator(s)/driver(s) interact with
     """
+    def __init__(self) -> None:        
 
-    def __init__(self) -> None:
-        self.xboxController = XboxController(constants.kXboxControllerPort)
+        with open('controlInterface.yml', 'r') as file:
+            controlScheme = yaml.safe_load(file)
+
+        defaultControls = controlScheme[controlScheme["default"]]
+
+        self.xboxController = Joystick(constants.kXboxControllerPort)
         self.cameraController = XboxController(constants.kCameraControllerPort)
         self.translationController = Joystick(
             constants.kTranslationControllerPort)
         self.rotationController = Joystick(constants.kRotationControllerPort)
+        
+        self.scaler = lambda: (self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) -1 ) * -1
+        self.rotation = lambda: self.xboxController.getX(GenericHID.Hand.kRightHand)
 
-        self.coordinateModeControl = (
+        self.returnPositionInput = (
             self.xboxController,
-            # XboxController.Button.kA.value,
-            XboxController.Button.kBumperRight.value,
+            180,
+            0 
         )
 
-        self.resetSwerveControl = (
+        self.returnModeControl = (
             self.xboxController,
-            XboxController.Button.kX.value,
+            0, 
+            0
         )
 
         self.honkControl = (
@@ -84,6 +97,13 @@ class OperatorInterface:
             self.xboxController,
             XboxController.Button.kY.value
         )
+
+        self.coordinateModeControl = (self.xboxController,
+                                      defaultControls["fieldRelative"])
+
+        self.resetSwerveControl = (self.xboxController,
+                                   defaultControls["resetSwerveControl"])
+
 
         # self.chassisControls = HolonomicInput(
         #     Invert(
@@ -117,24 +137,21 @@ class OperatorInterface:
         self.chassisControls = HolonomicInput(
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getY(GenericHID.Hand.kLeftHand) * (
-                        self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) - 1) * -0.5,
+                    lambda: self.xboxController.getRawAxis(defaultControls[
+                        "forwardsBackwards"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
-                )
-            ),
+                )),
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getX(GenericHID.Hand.kLeftHand) * (
-                        self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) - 1) * -0.5,
+                    lambda: self.xboxController.getRawAxis(defaultControls[
+                        "sideToSide"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
-                )
-            ),
+                )),
             Invert(
                 Deadband(
-                    #lambda: self.xboxController.getX(GenericHID.Hand.kRightHand),
-                    lambda: self.xboxController.getTriggerAxis(GenericHID.Hand.kLeftHand) * (
-                        self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) - 1) * -0.5,
+                    lambda: self.xboxController.getRawAxis(defaultControls[
+                        "rotation"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
-                )
-            ),
+                )),
         )
+
