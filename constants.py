@@ -218,7 +218,7 @@ kConfigurationTimeoutLimit = int(5 * kMillisecondsPerSecond)
 """milliseconds"""
 
 kDrivePIDSlot = 0
-kDrivePGain = 0.01
+kDrivePGain = 0.02
 kDriveIGain = 0.0
 kDriveDGain = 0.0
 
@@ -297,3 +297,10 @@ kPWMCameraSwerveUpDown = 1
 
 kPWMCameraLeftRightInverted = True
 kPWMCameraUpDownInverted = False
+
+# horn related *stuff*
+kHornPWMPinLocation = 2
+kHorn2PWMPinLocation = 3
+
+# Light controls
+kBackLightControllerDeviceID = 60

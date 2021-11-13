@@ -20,6 +20,13 @@ def Deadband(input: AnalogInput, deadband: float) -> AnalogInput:
     return withDeadband
 
 
+def Abs(input: AnalogInput) -> AnalogInput:
+    def absolute() -> float:
+        inp = input()
+        return -1 * inp if inp < 0 else inp
+    return absolute
+
+
 def Invert(input: AnalogInput) -> AnalogInput:
     def invert() -> float:
         return -1 * input()
@@ -68,6 +75,16 @@ class OperatorInterface:
             XboxController.Button.kX.value,
         )
 
+        self.honkControl = (
+            self.xboxController,
+            XboxController.Button.kB.value,
+        )
+
+        self.honkControl2 = (
+            self.xboxController,
+            XboxController.Button.kY.value
+        )
+
         # self.chassisControls = HolonomicInput(
         #     Invert(
         #         Deadband(
@@ -89,9 +106,14 @@ class OperatorInterface:
         #     ),
         # )
 
-        self.cameraControls = CameraControl(Invert(Deadband(lambda: self.cameraController.getX(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)), Invert(
-            Deadband(lambda: self.cameraController.getY(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)))
-
+        self.cameraControls = CameraControl(
+            Invert(
+                Deadband(
+                    lambda: self.cameraController.getX(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)), Invert(
+                Deadband(lambda: self.cameraController.getY(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)))
+        self.backLightControl = Abs(
+            lambda: self.cameraController.getTriggerAxis(
+                GenericHID.Hand.kLeftHand))
         self.chassisControls = HolonomicInput(
             Invert(
                 Deadband(
