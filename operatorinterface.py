@@ -38,6 +38,10 @@ class HolonomicInput:
         self.sideToSide = sideToSide
         self.rotation = rotation
 
+class CameraControl:
+    def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
+        self.leftRight = leftRight
+        self.upDown = upDown
 
 class OperatorInterface:
     """
@@ -48,6 +52,21 @@ class OperatorInterface:
         self.xboxController = XboxController(constants.kXboxControllerPort)
         self.translationController = Joystick(constants.kTranslationControllerPort)
         self.rotationController = Joystick(constants.kRotationControllerPort)
+        
+        self.scaler = lambda: (self.xboxController.getTriggerAxis(GenericHID.Hand.kRightHand) -1 ) * -1
+        self.rotation = lambda: self.xboxController.getX(GenericHID.Hand.kRightHand)
+
+        self.returnPositionInput = (
+            self.xboxController,
+            180,
+            0 
+        )
+
+        self.returnModeControl = (
+            self.xboxController,
+            0, 
+            0
+        )
 
         self.coordinateModeControl = (
             self.xboxController,
@@ -82,21 +101,17 @@ class OperatorInterface:
 
         self.chassisControls = HolonomicInput(
             Invert(
-                Deadband(
-                    lambda: self.xboxController.getY(GenericHID.Hand.kLeftHand),
-                    constants.kXboxJoystickDeadband,
-                )
+                Deadband(lambda: self.xboxController.getY(GenericHID.Hand.kLeftHand) * self.scaler(), constants.kXboxJoystickDeadband)
+            ),
+            Invert(
+                Deadband(lambda: self.xboxController.getX(GenericHID.Hand.kLeftHand) * self.scaler(), constants.kXboxJoystickDeadband)
+
             ),
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getX(GenericHID.Hand.kLeftHand),
-                    constants.kXboxJoystickDeadband,
-                )
-            ),
-            Invert(
-                Deadband(
-                    lambda: self.xboxController.getX(GenericHID.Hand.kRightHand),
+                    lambda: self.rotation(),
                     constants.kXboxJoystickDeadband,
                 )
             ),
         )
+

@@ -1,4 +1,5 @@
 from commands2 import CommandBase
+from wpimath.geometry._geometry import Pose2d
 
 from subsystems.drivesubsystem import DriveSubsystem
 
@@ -12,6 +13,7 @@ class ResetDrive(CommandBase):
 
     def initialize(self) -> None:
         print("Command: {}".format(self.getName()))
+        self.drive.returnPos = self.drive.shiftPoint(self.drive.returnPos, self.drive.odometry.getPose())
 
     def execute(self) -> None:
         self.drive.resetSwerveModules()
