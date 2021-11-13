@@ -1,0 +1,22 @@
+# forwardsBackwards, sideToSide, and rotation all must be axis numbers
+# fieldRelative, and resetSwerveControl all must be button numbers
+# to get the numbers, open the driverstation or simulator for which number and axis
+# the default is set below:
+default: "XBOX"
+
+XBOX_SIM:
+  forwardsBackwards: 1
+  sideToSide: 0
+  rotation: 4
+
+  fieldRelative: 10
+  resetSwerveControl: 2
+
+XBOX_DRIVERSTATION:
+  forwardsBackwards: 2
+  sideToSide: 1
+  rotation: 0
+
+  fieldRelative: 4
+  resetSwerveControl: 5
+
