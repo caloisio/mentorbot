@@ -1,7 +1,10 @@
+from ctre._ctre import WPI_TalonSRX
 import wpilib
 
 import commands2
 import commands2.button
+from commands.honk import RelayControl
+from commands.rotatecamera import RotateCamera
 
 import constants
 
@@ -10,6 +13,7 @@ from commands.drivedistance import DriveDistance
 from commands.defaultdrive import DefaultDrive
 from commands.fieldrelativedrive import FieldRelativeDrive
 from commands.resetdrive import ResetDrive
+from subsystems.cameracontroller import CameraSubsystem
 
 from commands.returndrive import ReturnDrive
 
@@ -35,6 +39,15 @@ class RobotContainer:
 
         # The robot's subsystems
         self.drive = DriveSubsystem()
+        self.camera = CameraSubsystem()
+
+        # horn
+        # self.light = wpilib.(constants.kHornPWMPinLocation)
+        # self.light2 = wpilib.Spark(constants.kHorn2PWMPinLocation)
+        # self.light.setRaw(65535) #turn off horn by default
+        # self.light2.setRaw(65535)
+
+        self.light = WPI_TalonSRX(constants.kBackLightControllerDeviceID)
         
         # Autonomous routines
 
@@ -70,6 +83,9 @@ class RobotContainer:
             )
         )
 
+        self.camera.setDefaultCommand(RotateCamera(
+            self.camera, self.operatorInterface.cameraControls.leftRight, self.operatorInterface.cameraControls.upDown))
+
     def configureButtonBindings(self):
         """
         Use this method to define your button->command mappings. Buttons can be created by
@@ -99,6 +115,16 @@ class RobotContainer:
         commands2.button.POVButton(
             *self.operatorInterface.returnModeControl
         ).whileHeld(ReturnDrive(self.drive, self.operatorInterface.scaler, self.operatorInterface.rotation))
+
+        # commands2.button.JoystickButton(
+        #     *self.operatorInterface.honkControl
+        # ).whileHeld(HornHonk(self.light2))
+
+        commands2.button.JoystickButton(
+            *self.operatorInterface.honkControl2
+        ).whileHeld(RelayControl(self.light, self.operatorInterface.backLightControl))
+
+        
 
     def getAutonomousCommand(self) -> commands2.Command:
         return self.chooser.getSelected()

@@ -20,6 +20,13 @@ def Deadband(input: AnalogInput, deadband: float) -> AnalogInput:
     return withDeadband
 
 
+def Abs(input: AnalogInput) -> AnalogInput:
+    def absolute() -> float:
+        inp = input()
+        return -1 * inp if inp < 0 else inp
+    return absolute
+
+
 def Invert(input: AnalogInput) -> AnalogInput:
     def invert() -> float:
         return -1 * input()
@@ -43,17 +50,25 @@ class CameraControl:
         self.leftRight = leftRight
         self.upDown = upDown
 
+class CameraControl:
+    def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
+        self.leftRight = leftRight
+        self.upDown = upDown
+
+
 class OperatorInterface:
     """
     The controls that the operator(s)/driver(s) interact with
     """
-    def __init__(self) -> None:
+    def __init__(self) -> None:        
+
         with open('controlInterface.yml', 'r') as file:
             controlScheme = yaml.safe_load(file)
 
         defaultControls = controlScheme[controlScheme["default"]]
 
         self.xboxController = Joystick(constants.kXboxControllerPort)
+        self.cameraController = XboxController(constants.kCameraControllerPort)
         self.translationController = Joystick(
             constants.kTranslationControllerPort)
         self.rotationController = Joystick(constants.kRotationControllerPort)
@@ -73,11 +88,22 @@ class OperatorInterface:
             0
         )
 
+        self.honkControl = (
+            self.xboxController,
+            XboxController.Button.kB.value,
+        )
+
+        self.honkControl2 = (
+            self.xboxController,
+            XboxController.Button.kY.value
+        )
+
         self.coordinateModeControl = (self.xboxController,
                                       defaultControls["fieldRelative"])
 
         self.resetSwerveControl = (self.xboxController,
                                    defaultControls["resetSwerveControl"])
+
 
         # self.chassisControls = HolonomicInput(
         #     Invert(
@@ -100,6 +126,14 @@ class OperatorInterface:
         #     ),
         # )
 
+        self.cameraControls = CameraControl(
+            Invert(
+                Deadband(
+                    lambda: self.cameraController.getX(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)), Invert(
+                Deadband(lambda: self.cameraController.getY(GenericHID.Hand.kLeftHand), constants.kXboxJoystickDeadband,)))
+        self.backLightControl = Abs(
+            lambda: self.cameraController.getTriggerAxis(
+                GenericHID.Hand.kLeftHand))
         self.chassisControls = HolonomicInput(
             Invert(
                 Deadband(

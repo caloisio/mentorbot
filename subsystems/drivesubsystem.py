@@ -372,6 +372,7 @@ class DriveSubsystem(SubsystemBase):
                 CANCoder(constants.kBackRightSteerEncoderId),
                 constants.kBackRightAbsoluteEncoderOffset,
             )
+            
         else:
             self.frontLeftModule = PWMSwerveModule(
                 constants.kFrontLeftModuleName,
