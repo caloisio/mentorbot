@@ -2,9 +2,9 @@ from wpilib import Joystick, XboxController
 from wpilib.interfaces import GenericHID
 
 import typing
+import yaml
 
 import constants
-
 
 AnalogInput = typing.Callable[[], float]
 
@@ -43,21 +43,22 @@ class OperatorInterface:
     """
     The controls that the operator(s)/driver(s) interact with
     """
-
     def __init__(self) -> None:
-        self.xboxController = XboxController(constants.kXboxControllerPort)
-        self.translationController = Joystick(constants.kTranslationControllerPort)
+        with open('controlInterface.yml', 'r') as file:
+            controlScheme = yaml.safe_load(file)
+
+        defaultControls = controlScheme[controlScheme["default"]]
+
+        self.xboxController = Joystick(constants.kXboxControllerPort)
+        self.translationController = Joystick(
+            constants.kTranslationControllerPort)
         self.rotationController = Joystick(constants.kRotationControllerPort)
 
-        self.coordinateModeControl = (
-            self.xboxController,
-            XboxController.Button.kBumperRight.value,
-        )
+        self.coordinateModeControl = (self.xboxController,
+                                      defaultControls["fieldRelative"])
 
-        self.resetSwerveControl = (
-            self.xboxController,
-            XboxController.Button.kX.value,
-        )
+        self.resetSwerveControl = (self.xboxController,
+                                   defaultControls["resetSwerveControl"])
 
         # self.chassisControls = HolonomicInput(
         #     Invert(
@@ -83,20 +84,20 @@ class OperatorInterface:
         self.chassisControls = HolonomicInput(
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getY(GenericHID.Hand.kLeftHand),
+                    lambda: self.xboxController.getRawAxis(defaultControls[
+                        "forwardsBackwards"]),
                     constants.kXboxJoystickDeadband,
-                )
-            ),
+                )),
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getX(GenericHID.Hand.kLeftHand),
+                    lambda: self.xboxController.getRawAxis(defaultControls[
+                        "sideToSide"]),
                     constants.kXboxJoystickDeadband,
-                )
-            ),
+                )),
             Invert(
                 Deadband(
-                    lambda: self.xboxController.getX(GenericHID.Hand.kRightHand),
+                    lambda: self.xboxController.getRawAxis(defaultControls[
+                        "rotation"]),
                     constants.kXboxJoystickDeadband,
-                )
-            ),
+                )),
         )
