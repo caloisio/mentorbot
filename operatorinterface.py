@@ -1,4 +1,4 @@
-from wpilib import Joystick, XboxController
+from wpilib import Joystick, XboxController, RobotBase
 from wpilib.interfaces import GenericHID
 
 import typing
@@ -62,7 +62,8 @@ class OperatorInterface:
         with open('controlInterface.yml', 'r') as file:
             controlScheme = yaml.safe_load(file)
 
-        defaultControls = controlScheme[controlScheme["default"]]
+        defaultControls = controlScheme[controlScheme["default"] + (
+            "_SIM" if RobotBase.isReal() else "_DRIVERSTATION")]
 
         self.xboxController = Joystick(constants.kXboxControllerPort)
         self.cameraController = XboxController(constants.kCameraControllerPort)
