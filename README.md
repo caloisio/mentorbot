@@ -100,12 +100,11 @@ py -3 -m venv ./.venv
      ```bash
      source <path-to-mentorbot-repo>/.venv/Scripts/activate
      ```
-1. **Install / update robotpy**
+1. **Install / update dependancies**
    (must have internet connection)
    ```bash
-   python -m pip install -U robotpy
+   python -m pip install -r requirements.txt
    ```
-   (examples: `robotpy`, `robotpy[ctre,navx]`, `robotpy[all]`) (see: [robotpy on pypi](https://pypi.org/project/robotpy/))
 1. **Download python for roboRIO**
    (must have internet connection)
    ```bash
