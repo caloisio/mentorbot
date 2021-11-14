@@ -1,3 +1,4 @@
+from os import path
 from wpilib import Joystick, XboxController, RobotBase
 from wpilib.interfaces import GenericHID
 
@@ -34,6 +35,7 @@ def Invert(input: AnalogInput) -> AnalogInput:
 
     return invert
 
+
 class CameraControl:
     def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
         self.leftRight = leftRight
@@ -58,7 +60,9 @@ class OperatorInterface:
     """
     def __init__(self) -> None:
 
-        with open('controlInterface.yml', 'r') as file:
+        with open(
+                path.join(path.dirname(path.realpath(__file__)),
+                          'controlInterface.yml'), 'r') as file:
             controlScheme = yaml.safe_load(file)
 
         defaultControls = controlScheme[controlScheme["default"] + (
