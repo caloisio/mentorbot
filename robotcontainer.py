@@ -31,7 +31,6 @@ class RobotContainer:
     periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
     subsystems, commands, and button mappings) should be declared here.
     """
-
     def __init__(self) -> None:
 
         # The operator interface (driver controls)
@@ -48,7 +47,7 @@ class RobotContainer:
         # self.light2.setRaw(65535)
 
         self.light = WPI_TalonSRX(constants.kBackLightControllerDeviceID)
-        
+
         # Autonomous routines
 
         # A simple auto routine that drives forward a specified distance, and then stops.
@@ -80,11 +79,12 @@ class RobotContainer:
                 self.operatorInterface.chassisControls.forwardsBackwards,
                 self.operatorInterface.chassisControls.sideToSide,
                 self.operatorInterface.chassisControls.rotation,
-            )
-        )
+            ))
 
-        self.camera.setDefaultCommand(RotateCamera(
-            self.camera, self.operatorInterface.cameraControls.leftRight, self.operatorInterface.cameraControls.upDown))
+        self.camera.setDefaultCommand(
+            RotateCamera(self.camera,
+                         self.operatorInterface.cameraControls.leftRight,
+                         self.operatorInterface.cameraControls.upDown))
 
     def configureButtonBindings(self):
         """
@@ -93,38 +93,35 @@ class RobotContainer:
         and then passing it to a JoystickButton.
         """
         commands2.button.JoystickButton(
-            *self.operatorInterface.coordinateModeControl
-        ).whileHeld(
-            FieldRelativeDrive(
-                self.drive,
-                self.operatorInterface.chassisControls.forwardsBackwards,
-                self.operatorInterface.chassisControls.sideToSide,
-                self.operatorInterface.chassisControls.rotation,
-            )
-        )
-
+            *self.operatorInterface.coordinateModeControl).whileHeld(
+                FieldRelativeDrive(
+                    self.drive,
+                    self.operatorInterface.chassisControls.forwardsBackwards,
+                    self.operatorInterface.chassisControls.sideToSide,
+                    self.operatorInterface.chassisControls.rotation,
+                ))
 
         commands2.button.JoystickButton(
-            *self.operatorInterface.resetSwerveControl
-        ).whenPressed(ResetDrive(self.drive))
-    
-        commands2.button.POVButton(
-            *self.operatorInterface.returnPositionInput
-        ).whenPressed(SetReturn(self.drive))
+            *self.operatorInterface.resetSwerveControl).whenPressed(
+                ResetDrive(self.drive))
 
         commands2.button.POVButton(
-            *self.operatorInterface.returnModeControl
-        ).whileHeld(ReturnDrive(self.drive, self.operatorInterface.scaler, self.operatorInterface.rotation))
+            *self.operatorInterface.returnPositionInput).whenPressed(
+                SetReturn(self.drive))
+
+        commands2.button.POVButton(
+            *self.operatorInterface.returnModeControl).whileHeld(
+                ReturnDrive(self.drive, self.operatorInterface.scaler,
+                            self.operatorInterface.rotation))
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl
         # ).whileHeld(HornHonk(self.light2))
 
         commands2.button.JoystickButton(
-            *self.operatorInterface.honkControl2
-        ).whileHeld(RelayControl(self.light, self.operatorInterface.backLightControl))
-
-        
+            *self.operatorInterface.honkControl2).whileHeld(
+                RelayControl(self.light,
+                             self.operatorInterface.backLightControl))
 
     def getAutonomousCommand(self) -> commands2.Command:
         return self.chooser.getSelected()

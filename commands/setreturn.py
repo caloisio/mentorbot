@@ -17,7 +17,6 @@ class SetReturn(CommandBase):
         currentY = currentPose.Y()
 
         print("New Coordinates \nX: {0}, Y: {1}".format(currentX, currentY))
-        
 
     def isFinished(self) -> bool:
         return True

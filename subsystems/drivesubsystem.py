@@ -39,7 +39,8 @@ class SwerveModule:
     def getWheelLinearVelocity(self) -> float:
         raise NotImplementedError("Must be implemented by subclass")
 
-    def setWheelLinearVelocityTarget(self, wheelLinearVelocityTarget: float) -> None:
+    def setWheelLinearVelocityTarget(self,
+                                     wheelLinearVelocityTarget: float) -> None:
         raise NotImplementedError("Must be implemented by subclass")
 
     def reset(self) -> None:
@@ -52,7 +53,8 @@ class SwerveModule:
         )
 
     def applyState(self, state: SwerveModuleState) -> None:
-        optimizedState = SwerveModuleState.optimize(state, self.getSwerveAngle())
+        optimizedState = SwerveModuleState.optimize(state,
+                                                    self.getSwerveAngle())
         # optimizedState = state
         self.setWheelLinearVelocityTarget(optimizedState.speed)
         self.setSwerveAngleTarget(optimizedState.angle)
@@ -66,7 +68,6 @@ class PWMSwerveModule(SwerveModule):
         wheelEncoder: wheel distance (meters)
         swerveEncoder: swerve angle (radians)
     """
-
     def __init__(
         self,
         name: str,
@@ -81,23 +82,25 @@ class PWMSwerveModule(SwerveModule):
         self.wheelEncoder = wheelEncoder
         self.swerveEncoder = swerveEncoder
 
-        self.wheelEncoder.setDistancePerPulse(1 / constants.kWheelEncoderPulsesPerMeter)
+        self.wheelEncoder.setDistancePerPulse(
+            1 / constants.kWheelEncoderPulsesPerMeter)
         self.swerveEncoder.setDistancePerPulse(
-            1 / constants.kSwerveEncoderPulsesPerRadian
-        )
+            1 / constants.kSwerveEncoderPulsesPerRadian)
 
     def getSwerveAngle(self) -> Rotation2d:
         return Rotation2d(self.swerveEncoder.getDistance())
 
     def setSwerveAngleTarget(self, swerveAngleTarget: Rotation2d) -> None:
-        swerveError = swerveAngleTarget.radians() - self.swerveEncoder.getDistance()
+        swerveError = swerveAngleTarget.radians(
+        ) - self.swerveEncoder.getDistance()
         swerveErrorClamped = min(max(swerveError, -1), 1)
         self.swerveMotor.setSpeed(swerveErrorClamped)
 
     def getWheelLinearVelocity(self) -> float:
         return self.wheelEncoder.getRate()
 
-    def setWheelLinearVelocityTarget(self, wheelLinearVelocityTarget: float) -> None:
+    def setWheelLinearVelocityTarget(self,
+                                     wheelLinearVelocityTarget: float) -> None:
         speedFactor = wheelLinearVelocityTarget / constants.kMaxWheelLinearVelocity
         speedFactorClamped = min(max(speedFactor, -1), 1)
         self.wheelMotor.setSpeed(speedFactorClamped)
@@ -114,7 +117,6 @@ class CTRESwerveModule(SwerveModule):
         steerMotor: Falcon 500 Motor (with built-in encoder) attached to swerve through gearing
         swerveEncoder: CANCoder
     """
-
     def __init__(
         self,
         name: str,
@@ -140,58 +142,52 @@ class CTRESwerveModule(SwerveModule):
             return True
 
         print("Initializing swerve module: {}".format(self.name))
-        print(
-            "   Configuring swerve encoder: CAN ID: {}".format(
-                self.swerveEncoder.getDeviceNumber()
-            )
-        )
+        print("   Configuring swerve encoder: CAN ID: {}".format(
+            self.swerveEncoder.getDeviceNumber()))
         if not ctreCheckError(
-            "configFactoryDefault",
-            self.swerveEncoder.configFactoryDefault(
-                constants.kConfigurationTimeoutLimit
-            ),
+                "configFactoryDefault",
+                self.swerveEncoder.configFactoryDefault(
+                    constants.kConfigurationTimeoutLimit),
         ):
             return
         if not ctreCheckError(
-            "configSensorInitializationStrategy",
-            self.swerveEncoder.configSensorInitializationStrategy(
-                SensorInitializationStrategy.BootToAbsolutePosition,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "configSensorInitializationStrategy",
+                self.swerveEncoder.configSensorInitializationStrategy(
+                    SensorInitializationStrategy.BootToAbsolutePosition,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         if not ctreCheckError(
-            "configMagnetOffset",
-            self.swerveEncoder.configMagnetOffset(
-                -1 * self.swerveEncoderOffset,  # invert the offset to zero the encoder
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "configMagnetOffset",
+                self.swerveEncoder.configMagnetOffset(
+                    -1 * self.
+                    swerveEncoderOffset,  # invert the offset to zero the encoder
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         if not ctreCheckError(
-            "configAbsoluteSensorRange",
-            self.swerveEncoder.configAbsoluteSensorRange(
-                AbsoluteSensorRange.Signed_PlusMinus180,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "configAbsoluteSensorRange",
+                self.swerveEncoder.configAbsoluteSensorRange(
+                    AbsoluteSensorRange.Signed_PlusMinus180,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         if not ctreCheckError(
-            "setPositionToAbsolute",
-            self.swerveEncoder.setPositionToAbsolute(
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "setPositionToAbsolute",
+                self.swerveEncoder.setPositionToAbsolute(
+                    constants.kConfigurationTimeoutLimit, ),
         ):
             return
         print("   ... Done")
-        print(
-            "   Configuring drive motor: CAN ID: {}".format(
-                self.driveMotor.getDeviceID()
-            )
-        )
+        print("   Configuring drive motor: CAN ID: {}".format(
+            self.driveMotor.getDeviceID()))
         if not ctreCheckError(
-            "configFactoryDefault",
-            self.driveMotor.configFactoryDefault(constants.kConfigurationTimeoutLimit),
+                "configFactoryDefault",
+                self.driveMotor.configFactoryDefault(
+                    constants.kConfigurationTimeoutLimit),
         ):
             return
         # config = TalonFXConfiguration()
@@ -204,42 +200,40 @@ class CTRESwerveModule(SwerveModule):
         #     print("   Config:\n{}".format(config.toString()))
         self.driveMotor.setInverted(self.driveMotorInverted)
         if not ctreCheckError(
-            "config_kP",
-            self.driveMotor.config_kP(
-                constants.kDrivePIDSlot,
-                constants.kDrivePGain,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "config_kP",
+                self.driveMotor.config_kP(
+                    constants.kDrivePIDSlot,
+                    constants.kDrivePGain,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         if not ctreCheckError(
-            "config_kI",
-            self.driveMotor.config_kI(
-                constants.kDrivePIDSlot,
-                constants.kDriveIGain,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "config_kI",
+                self.driveMotor.config_kI(
+                    constants.kDrivePIDSlot,
+                    constants.kDriveIGain,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         if not ctreCheckError(
-            "config_kD",
-            self.driveMotor.config_kD(
-                constants.kDrivePIDSlot,
-                constants.kDriveDGain,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "config_kD",
+                self.driveMotor.config_kD(
+                    constants.kDrivePIDSlot,
+                    constants.kDriveDGain,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         print("   ... Done")
 
-        print(
-            "   Configuring steer motor: CAN ID: {}".format(
-                self.steerMotor.getDeviceID()
-            )
-        )
+        print("   Configuring steer motor: CAN ID: {}".format(
+            self.steerMotor.getDeviceID()))
         if not ctreCheckError(
-            "configFactoryDefault",
-            self.steerMotor.configFactoryDefault(constants.kConfigurationTimeoutLimit),
+                "configFactoryDefault",
+                self.steerMotor.configFactoryDefault(
+                    constants.kConfigurationTimeoutLimit),
         ):
             return
         # config = TalonFXConfiguration()
@@ -252,30 +246,30 @@ class CTRESwerveModule(SwerveModule):
         #     print("   Config:\n{}".format(config.toString()))
         self.steerMotor.setInverted(self.steerMotorInverted)
         if not ctreCheckError(
-            "config_kP",
-            self.steerMotor.config_kP(
-                constants.kSteerPIDSlot,
-                constants.kSteerPGain,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "config_kP",
+                self.steerMotor.config_kP(
+                    constants.kSteerPIDSlot,
+                    constants.kSteerPGain,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         if not ctreCheckError(
-            "config_kI",
-            self.steerMotor.config_kI(
-                constants.kSteerPIDSlot,
-                constants.kSteerIGain,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "config_kI",
+                self.steerMotor.config_kI(
+                    constants.kSteerPIDSlot,
+                    constants.kSteerIGain,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         if not ctreCheckError(
-            "config_kD",
-            self.steerMotor.config_kD(
-                constants.kSteerPIDSlot,
-                constants.kSteerDGain,
-                constants.kConfigurationTimeoutLimit,
-            ),
+                "config_kD",
+                self.steerMotor.config_kD(
+                    constants.kSteerPIDSlot,
+                    constants.kSteerDGain,
+                    constants.kConfigurationTimeoutLimit,
+                ),
         ):
             return
         print("   ... Done")
@@ -289,40 +283,35 @@ class CTRESwerveModule(SwerveModule):
         return Rotation2d(swerveAngle)
 
     def setSwerveAngle(self, swerveAngle: Rotation2d) -> None:
-        steerEncoderPulses = (
-            swerveAngle.radians() * constants.kSwerveEncoderPulsesPerRadian
-        )
+        steerEncoderPulses = (swerveAngle.radians() *
+                              constants.kSwerveEncoderPulsesPerRadian)
         self.steerMotor.setSelectedSensorPosition(steerEncoderPulses)
 
     def setSwerveAngleTarget(self, swerveAngleTarget: Rotation2d) -> None:
-        steerEncoderPulsesTarget = (
-            swerveAngleTarget.radians() * constants.kSwerveEncoderPulsesPerRadian
-        )
+        steerEncoderPulsesTarget = (swerveAngleTarget.radians() *
+                                    constants.kSwerveEncoderPulsesPerRadian)
         self.steerMotor.set(ControlMode.Position, steerEncoderPulsesTarget)
 
     def getWheelLinearVelocity(self) -> float:
         driveEncoderPulsesPerSecond = (
-            self.driveMotor.getSelectedSensorVelocity()
-            * constants.k100MillisecondsPerSecond
-        )
-        wheelLinearVelocity = (
-            driveEncoderPulsesPerSecond / constants.kWheelEncoderPulsesPerMeter
-        )
+            self.driveMotor.getSelectedSensorVelocity() *
+            constants.k100MillisecondsPerSecond)
+        wheelLinearVelocity = (driveEncoderPulsesPerSecond /
+                               constants.kWheelEncoderPulsesPerMeter)
         return wheelLinearVelocity
 
-    def setWheelLinearVelocityTarget(self, wheelLinearVelocityTarget: float) -> None:
-        driveEncoderPulsesPerSecond = (
-            wheelLinearVelocityTarget * constants.kWheelEncoderPulsesPerMeter
-        )
+    def setWheelLinearVelocityTarget(self,
+                                     wheelLinearVelocityTarget: float) -> None:
+        driveEncoderPulsesPerSecond = (wheelLinearVelocityTarget *
+                                       constants.kWheelEncoderPulsesPerMeter)
         self.driveMotor.set(
             ControlMode.Velocity,
             driveEncoderPulsesPerSecond / constants.k100MillisecondsPerSecond,
         )
 
     def reset(self) -> None:
-        swerveEncoderAngle = (
-            self.swerveEncoder.getAbsolutePosition() * constants.kRadiansPerDegree
-        )
+        swerveEncoderAngle = (self.swerveEncoder.getAbsolutePosition() *
+                              constants.kRadiansPerDegree)
         self.setSwerveAngle(Rotation2d(swerveEncoderAngle))
 
 
@@ -372,7 +361,7 @@ class DriveSubsystem(SubsystemBase):
                 CANCoder(constants.kBackRightSteerEncoderId),
                 constants.kBackRightAbsoluteEncoderOffset,
             )
-            
+
         else:
             self.frontLeftModule = PWMSwerveModule(
                 constants.kFrontLeftModuleName,
@@ -423,7 +412,8 @@ class DriveSubsystem(SubsystemBase):
 
         # Create the an object for our odometry, which will utilize sensor data to
         # keep a record of our position on the field.
-        self.odometry = SwerveDrive4Odometry(self.kinematics, self.gyro.getRotation2d())
+        self.odometry = SwerveDrive4Odometry(self.kinematics,
+                                             self.gyro.getRotation2d())
 
         self.printTimer = Timer()
         # self.printTimer.start()
@@ -464,7 +454,8 @@ class DriveSubsystem(SubsystemBase):
             brSpeed = self.backRightModule.getWheelLinearVelocity()
 
             print(
-                "r: {:.1f}, {:.1f}, {}* fl: {}* {:.1f} fr: {}* {:.1f} bl: {}* {:.1f} br: {}* {:.1f}".format(
+                "r: {:.1f}, {:.1f}, {}* fl: {}* {:.1f} fr: {}* {:.1f} bl: {}* {:.1f} br: {}* {:.1f}"
+                .format(
                     rX,
                     rY,
                     rAngle,
@@ -476,8 +467,7 @@ class DriveSubsystem(SubsystemBase):
                     blSpeed,
                     brAngle,
                     brSpeed,
-                )
-            )
+                ))
 
     def arcadeDriveWithFactors(
         self,
@@ -506,9 +496,8 @@ class DriveSubsystem(SubsystemBase):
 
         self.arcadeDriveWithSpeeds(chassisSpeeds, coordinateMode)
 
-    def arcadeDriveWithSpeeds(
-        self, chassisSpeeds: ChassisSpeeds, coordinateMode: CoordinateMode
-    ) -> None:
+    def arcadeDriveWithSpeeds(self, chassisSpeeds: ChassisSpeeds,
+                              coordinateMode: CoordinateMode) -> None:
 
         robotChassisSpeeds = None
         if coordinateMode is DriveSubsystem.CoordinateMode.RobotRelative:
@@ -527,25 +516,25 @@ class DriveSubsystem(SubsystemBase):
             backLeftState,
             backRightState,
         ) = SwerveDrive4Kinematics.normalizeWheelSpeeds(
-            moduleStates, constants.kMaxWheelLinearVelocity
-        )
+            moduleStates, constants.kMaxWheelLinearVelocity)
         self.frontLeftModule.applyState(frontLeftState)
         self.frontRightModule.applyState(frontRightState)
         self.backLeftModule.applyState(backLeftState)
         self.backRightModule.applyState(backRightState)
 
-    def rotatePoint(self, x: float, y: float, angle: float, ccw: bool) -> Tuple[float, float]:
-        invert = ccw*2 - 1
+    def rotatePoint(self, x: float, y: float, angle: float,
+                    ccw: bool) -> Tuple[float, float]:
+        invert = ccw * 2 - 1
 
-        xNew = x*cos(angle) - y*sin(angle)*invert
-        yNew = x*sin(angle) + y*cos(angle)*invert
+        xNew = x * cos(angle) - y * sin(angle) * invert
+        yNew = x * sin(angle) + y * cos(angle) * invert
         return xNew, yNew
 
     def shiftPoint(self, savedPose: Pose2d, currentPose: Pose2d) -> Pose2d:
-        xDelta = savedPose.X() - currentPose.X() 
-        yDelta = savedPose.Y() - currentPose.Y() 
+        xDelta = savedPose.X() - currentPose.X()
+        yDelta = savedPose.Y() - currentPose.Y()
 
-        coords = self.rotatePoint(xDelta, yDelta, currentPose.rotation().radians() * -1, True)
+        coords = self.rotatePoint(xDelta, yDelta,
+                                  currentPose.rotation().radians() * -1, True)
 
         return Pose2d(coords[0], coords[1], 0)
-        
