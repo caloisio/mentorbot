@@ -66,7 +66,7 @@ class OperatorInterface:
             controlScheme = yaml.safe_load(file)
 
         defaultControls = controlScheme[controlScheme["default"] + (
-            "_SIM" if RobotBase.isReal() else "_DRIVERSTATION")]
+            "_SIM" if not RobotBase.isReal() else "_DRIVERSTATION")]
 
         self.xboxController = Joystick(constants.kXboxControllerPort)
         self.cameraController = XboxController(constants.kCameraControllerPort)
@@ -75,7 +75,7 @@ class OperatorInterface:
         self.rotationController = Joystick(constants.kRotationControllerPort)
 
         self.scaler = lambda: (self.xboxController.getRawAxis(defaultControls[
-            "scaler"]) - 1) * -1
+            "scaler"]) - 1) * -0.5
         self.rotation = lambda: self.xboxController.getRawAxis(defaultControls[
             "rotation"]) * self.scaler(),
 
