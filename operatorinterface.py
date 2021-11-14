@@ -76,8 +76,6 @@ class OperatorInterface:
 
         self.scaler = lambda: (self.xboxController.getRawAxis(defaultControls[
             "scaler"]) - 1) * -0.5
-        self.rotation = lambda: self.xboxController.getRawAxis(defaultControls[
-            "rotation"]) * self.scaler(),
 
         self.returnPositionInput = (self.xboxController, 180, 0)
 

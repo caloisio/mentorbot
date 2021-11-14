@@ -112,7 +112,7 @@ class RobotContainer:
         commands2.button.POVButton(
             *self.operatorInterface.returnModeControl).whileHeld(
                 ReturnDrive(self.drive, self.operatorInterface.scaler,
-                            self.operatorInterface.rotation))
+                            self.operatorInterface.chassisControls.rotation))
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl
