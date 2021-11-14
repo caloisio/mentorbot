@@ -34,6 +34,11 @@ def Invert(input: AnalogInput) -> AnalogInput:
 
     return invert
 
+class CameraControl:
+    def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
+        self.leftRight = leftRight
+        self.upDown = upDown
+
 
 class HolonomicInput:
     def __init__(
