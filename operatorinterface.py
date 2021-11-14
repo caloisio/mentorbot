@@ -47,12 +47,6 @@ class HolonomicInput:
         self.rotation = rotation
 
 
-class CameraControl:
-    def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
-        self.leftRight = leftRight
-        self.upDown = upDown
-
-
 class OperatorInterface:
     """
     The controls that the operator(s)/driver(s) interact with
