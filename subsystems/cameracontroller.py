@@ -1,5 +1,5 @@
 from commands2._impl import SubsystemBase
-from wpilib._wpilib import PWMSpeedController
+from wpilib._wpilib import PWMSpeedController, RobotBase
 import constants
 
 
@@ -7,8 +7,11 @@ class CameraSubsystem(SubsystemBase):
     def __init__(self) -> None:
         SubsystemBase.__init__(self)
         self.leftRight = PWMSpeedController(
-            constants.kPWMCameraSwerveLeftRight)
-        self.upDown = PWMSpeedController(constants.kPWMCameraSwerveUpDown)
+            constants.kPWMCameraSwerveLeftRight if RobotBase.isReal(
+            ) else constants.kPWMCameraSimSwerveLeftRight)
+        self.upDown = PWMSpeedController(
+            constants.kPWMCameraSwerveUpDown if RobotBase.isReal(
+            ) else constants.kPWMCameraSimSwerveUpDown)
 
         self.leftRight.setInverted(constants.kPWMCameraLeftRightInverted)
         self.upDown.setInverted(constants.kPWMCameraUpDownInverted)

@@ -288,6 +288,8 @@ kKeyboardJoystickDeadband = 0.0
 kPWMCameraSwerveLeftRight = 0
 """direct port number on the RoboRIO itself"""
 kPWMCameraSwerveUpDown = 1
+kPWMCameraSimSwerveUpDown = 8
+kPWMCameraSimSwerveLeftRight = 9
 
 kPWMCameraLeftRightInverted = True
 kPWMCameraUpDownInverted = False
