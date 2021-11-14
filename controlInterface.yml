@@ -8,6 +8,7 @@ XBOX_SIM:
   forwardsBackwards: 1
   sideToSide: 0
   rotation: 4
+  scaler: 5
 
   fieldRelative: 10
   resetSwerveControl: 2
@@ -16,7 +17,7 @@ XBOX_DRIVERSTATION:
   forwardsBackwards: 2
   sideToSide: 1
   rotation: 0
+  scaler: 5
 
   fieldRelative: 4
   resetSwerveControl: 5
-

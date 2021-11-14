@@ -71,10 +71,10 @@ class OperatorInterface:
             constants.kTranslationControllerPort)
         self.rotationController = Joystick(constants.kRotationControllerPort)
 
-        self.scaler = lambda: (self.xboxController.getTriggerAxis(
-            GenericHID.Hand.kRightHand) - 1) * -1
-        self.rotation = lambda: self.xboxController.getX(GenericHID.Hand.
-                                                         kRightHand)
+        self.scaler = lambda: (self.xboxController.getRawAxis(defaultControls[
+            "scaler"]) - 1) * -1
+        self.rotation = lambda: self.xboxController.getRawAxis(defaultControls[
+            "rotation"]) * self.scaler(),
 
         self.returnPositionInput = (self.xboxController, 180, 0)
 
