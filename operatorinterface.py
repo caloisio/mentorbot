@@ -3,7 +3,7 @@ from wpilib import Joystick, XboxController, RobotBase
 from wpilib.interfaces import GenericHID
 
 import typing
-import yaml
+import json
 
 import constants
 
@@ -62,8 +62,8 @@ class OperatorInterface:
 
         with open(
                 path.join(path.dirname(path.realpath(__file__)),
-                          'controlInterface.yml'), 'r') as file:
-            controlScheme = yaml.safe_load(file)
+                          'controlInterface.json'), 'r') as file:
+            controlScheme = json.load(file)
 
         defaultControls = controlScheme[controlScheme["default"] + (
             "_SIM" if not RobotBase.isReal() else "_DRIVERSTATION")]

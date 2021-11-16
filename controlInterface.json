@@ -1,0 +1,23 @@
+{
+  "default": "XBOX",
+
+  "XBOX_SIM": {
+    "forwardsBackwards": 1,
+    "sideToSide": 0,
+    "rotation": 3,
+    "scaler": 2,
+
+    "fieldRelative": 10,
+    "resetSwerveControl": 2
+  },
+
+  "XBOX_DRIVERSTATION": {
+    "forwardsBackwards": 1,
+    "sideToSide": 0,
+    "rotation": 3,
+    "scaler": 2,
+
+    "fieldRelative": 10,
+    "resetSwerveControl": 2
+  }
+}
