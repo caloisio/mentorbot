@@ -86,6 +86,10 @@ class OperatorInterface:
             XboxController.Button.kB.value,
         )
 
+        self.fillCannon = (self.xboxController, defaultControls["fillCannon"])
+        self.launchCannon = (self.xboxController,
+                             defaultControls["launchCannon"])
+
         self.honkControl2 = (self.xboxController,
                              XboxController.Button.kY.value)
 

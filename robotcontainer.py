@@ -1,3 +1,5 @@
+from commands.setcannon import SetCannon
+from subsystems.cannonsubsystem import CannonSubsystem
 from ctre._ctre import WPI_TalonSRX
 import wpilib
 
@@ -39,6 +41,7 @@ class RobotContainer:
         # The robot's subsystems
         self.drive = DriveSubsystem()
         self.camera = CameraSubsystem()
+        self.cannon = CannonSubsystem()
 
         # horn
         # self.light = wpilib.(constants.kHornPWMPinLocation)
@@ -86,6 +89,9 @@ class RobotContainer:
                          self.operatorInterface.cameraControls.leftRight,
                          self.operatorInterface.cameraControls.upDown))
 
+        self.cannon.setDefaultCommand(
+            SetCannon(self.cannon, SetCannon.Mode.Off))
+
     def configureButtonBindings(self):
         """
         Use this method to define your button->command mappings. Buttons can be created by
@@ -104,6 +110,14 @@ class RobotContainer:
         commands2.button.JoystickButton(
             *self.operatorInterface.resetSwerveControl).whenPressed(
                 ResetDrive(self.drive))
+
+        commands2.button.JoystickButton(
+            *self.operatorInterface.fillCannon).whenHeld(
+                SetCannon(self.cannon, SetCannon.Mode.Fill))
+
+        commands2.button.JoystickButton(
+            *self.operatorInterface.launchCannon).whenHeld(
+                SetCannon(self.cannon, SetCannon.Mode.Launch))
 
         commands2.button.POVButton(
             *self.operatorInterface.returnPositionInput).whenPressed(
