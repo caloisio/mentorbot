@@ -300,3 +300,12 @@ kHorn2PWMPinLocation = 3
 
 # Light controls
 kBackLightControllerDeviceID = 60
+
+# T Shirt Cannon Pnumaticr
+kPCMCannonCanID = 61
+kCannonLaunchPCMID = 0
+"""id of the specisic port on the PCM
+launch goes between staging load and cannon output"""
+kCannonFillPCMID = 1
+"""id of the specisic port on the PCM
+fill goes between 120psi tank and small tank"""
