@@ -1,5 +1,5 @@
 import typing
-from commands2._impl import CommandBase
+from commands2 import CommandBase
 
 from subsystems.cameracontroller import CameraSubsystem
 

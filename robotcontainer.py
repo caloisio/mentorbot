@@ -1,4 +1,4 @@
-from ctre._ctre import WPI_TalonSRX
+from ctre import WPI_TalonSRX
 import wpilib
 
 import commands2

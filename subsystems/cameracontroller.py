@@ -1,5 +1,5 @@
-from commands2._impl import SubsystemBase
-from wpilib._wpilib import PWMSpeedController, RobotBase
+from commands2 import SubsystemBase
+from wpilib import PWMSpeedController, RobotBase
 import constants
 
 

@@ -1,5 +1,4 @@
 from commands2 import CommandBase
-from wpimath.geometry._geometry import Pose2d
 
 from subsystems.drivesubsystem import DriveSubsystem
 

@@ -1,6 +1,6 @@
 import typing
 from commands2 import CommandBase
-from ctre._ctre import ControlMode, DemandType, WPI_TalonSRX
+from ctre import ControlMode, WPI_TalonSRX
 
 
 class RelayControl(CommandBase):
