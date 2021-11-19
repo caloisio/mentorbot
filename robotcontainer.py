@@ -92,8 +92,7 @@ class RobotContainer:
         self.cannon.setDefaultCommand(
             SetCannon(self.cannon, SetCannon.Mode.Off))
         self.light.setDefaultCommand(
-            RelayControl(self.light.light,
-                         self.operatorInterface.backLightControl))
+            RelayControl(self.light, self.operatorInterface.backLightControl))
 
     def configureButtonBindings(self):
         """

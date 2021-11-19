@@ -1,17 +1,21 @@
+from ctre._ctre import ControlMode
+from subsystems.lightsubsystem import LightSubsystem
 import typing
 from commands2 import CommandBase
-from ctre import ControlMode, WPI_TalonSRX
 
 
 class RelayControl(CommandBase):
-    def __init__(self, controller: WPI_TalonSRX,
+    def __init__(self, controller: LightSubsystem,
                  controlPercent: typing.Callable[[], float]) -> None:
         CommandBase.__init__(self)
         self.control = controller
         self.controlPercentCommand = controlPercent
 
-        self.setOutputPercent = lambda percent: self.control.set(
+        self.setOutputPercent = lambda percent: self.control.light.set(
             ControlMode.PercentOutput, percent)
+
+        self.addRequirements([self.control])
+        self.setName(__class__.__name__)
 
     def execute(self) -> None:
         self.setOutputPercent(self.controlPercentCommand())
