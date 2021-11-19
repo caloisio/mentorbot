@@ -6,9 +6,12 @@
     "sideToSide": 0,
     "rotation": 3,
     "scaler": 2,
+    "lightControl": 5,
 
     "fieldRelative": 10,
-    "resetSwerveControl": 2
+    "resetSwerveControl": 2,
+    "launchCannon": 7,
+    "fillCannon": 6
   },
 
   "XBOX_DRIVERSTATION": {
@@ -18,6 +21,8 @@
     "scaler": 2,
 
     "fieldRelative": 10,
-    "resetSwerveControl": 2
+    "resetSwerveControl": 2,
+    "launchCannon": 7,
+    "fillCannon": 6
   }
 }

@@ -81,17 +81,9 @@ class OperatorInterface:
 
         self.returnModeControl = (self.xboxController, 0, 0)
 
-        self.honkControl = (
-            self.xboxController,
-            XboxController.Button.kB.value,
-        )
-
         self.fillCannon = (self.xboxController, defaultControls["fillCannon"])
         self.launchCannon = (self.xboxController,
                              defaultControls["launchCannon"])
-
-        self.honkControl2 = (self.xboxController,
-                             XboxController.Button.kY.value)
 
         self.coordinateModeControl = (self.xboxController,
                                       defaultControls["fieldRelative"])
@@ -133,8 +125,8 @@ class OperatorInterface:
                                                        kLeftHand),
                     constants.kXboxJoystickDeadband,
                 )))
-        self.backLightControl = Abs(lambda: self.cameraController.
-                                    getTriggerAxis(GenericHID.Hand.kLeftHand))
+        self.backLightControl = Abs(lambda: self.cameraController.getRawAxis(
+            defaultControls["lightControl"]))
         self.chassisControls = HolonomicInput(
             Invert(
                 Deadband(
