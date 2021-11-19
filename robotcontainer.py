@@ -1,6 +1,7 @@
+from commands.blinklight import BlinkLight
+from commands2 import ParallelCommandGroup
 from commands.setcannon import SetCannon
 from subsystems.cannonsubsystem import CannonSubsystem
-from ctre import WPI_TalonSRX
 from subsystems.lightsubsystem import LightSubsystem
 import wpilib
 
@@ -127,8 +128,11 @@ class RobotContainer:
 
         commands2.button.POVButton(
             *self.operatorInterface.returnModeControl).whileHeld(
-                ReturnDrive(self.drive, self.operatorInterface.scaler,
-                            self.operatorInterface.chassisControls.rotation))
+                ParallelCommandGroup(
+                    ReturnDrive(
+                        self.drive, self.operatorInterface.scaler,
+                        self.operatorInterface.chassisControls.rotation),
+                    BlinkLight(self.light, 1, 200)))
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl

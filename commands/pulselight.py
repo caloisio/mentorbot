@@ -13,6 +13,7 @@ class PulseLight(CommandBase):
             x**x if squareOutput else x)  # yay inline functions
 
         self.rising = True
+        self.setName(__class__.__name__)
 
     def execute(self) -> None:
         self.setBrightness(bright := (  # set and reture for future use

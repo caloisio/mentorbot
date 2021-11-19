@@ -125,7 +125,7 @@ class OperatorInterface:
                                                        kLeftHand),
                     constants.kXboxJoystickDeadband,
                 )))
-        self.backLightControl = Abs(lambda: self.cameraController.getRawAxis(
+        self.backLightControl = Abs(lambda: self.xboxController.getRawAxis(
             defaultControls["lightControl"]))
         self.chassisControls = HolonomicInput(
             Invert(

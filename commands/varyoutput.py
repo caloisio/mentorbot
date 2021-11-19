@@ -1,4 +1,4 @@
-from ctre._ctre import ControlMode
+from ctre import ControlMode
 from subsystems.lightsubsystem import LightSubsystem
 import typing
 from commands2 import CommandBase
@@ -11,8 +11,7 @@ class RelayControl(CommandBase):
         self.control = controller
         self.controlPercentCommand = controlPercent
 
-        self.setOutputPercent = lambda percent: self.control.light.set(
-            ControlMode.PercentOutput, percent)
+        self.setOutputPercent = lambda percent: self.control.light.set(percent)
 
         self.addRequirements([self.control])
         self.setName(__class__.__name__)

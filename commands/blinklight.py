@@ -1,9 +1,9 @@
+from subsystems.lightsubsystem import LightSubsystem
 from commands2 import CommandBase
-from ctre import WPI_TalonSRX
 
 
 class BlinkLight(CommandBase):
-    def __init__(self, light: WPI_TalonSRX, amount: int,
+    def __init__(self, light: LightSubsystem, amount: int,
                  interval: int) -> None:
         CommandBase.__init__(self)
         self.repeatAmount = amount
@@ -12,7 +12,10 @@ class BlinkLight(CommandBase):
 
         self.timer = 0  # track ms since start
 
-        self.isFinished = lambda: self.repeatAmount <= 0  # consider finished when go through all blinks
+        self.setName(__class__.__name__)
+        self.addRequirements([self.light])
+
+        self.on = False
 
     def execute(self) -> None:
         # ASSUME 20MS BETWEEN EACH ITERATION OF BEING CALLED
@@ -20,9 +23,10 @@ class BlinkLight(CommandBase):
         self.timer += 20
 
         if self.timer > self.interval:
-            if self.light.get() != 0:
-                self.light.set(0.0)
+            if self.on:  #epsilon
+                self.light.light.set(0.0)
                 self.repeatAmount -= 1
             else:
-                self.light.set(1.0)
+                self.light.light.set(1.0)
+            self.on = not self.on
             self.timer = self.timer % self.interval  # if go over take the remainder
