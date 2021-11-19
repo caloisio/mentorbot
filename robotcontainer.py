@@ -1,11 +1,12 @@
 from commands.setcannon import SetCannon
 from subsystems.cannonsubsystem import CannonSubsystem
 from ctre import WPI_TalonSRX
+from subsystems.lightsubsystem import LightSubsystem
 import wpilib
 
 import commands2
 import commands2.button
-from commands.honk import RelayControl
+from commands.varyoutput import RelayControl
 from commands.rotatecamera import RotateCamera
 
 import constants
@@ -42,14 +43,13 @@ class RobotContainer:
         self.drive = DriveSubsystem()
         self.camera = CameraSubsystem()
         self.cannon = CannonSubsystem()
+        self.light = LightSubsystem()
 
         # horn
         # self.light = wpilib.(constants.kHornPWMPinLocation)
         # self.light2 = wpilib.Spark(constants.kHorn2PWMPinLocation)
         # self.light.setRaw(65535) #turn off horn by default
         # self.light2.setRaw(65535)
-
-        self.light = WPI_TalonSRX(constants.kBackLightControllerDeviceID)
 
         # Autonomous routines
 
@@ -91,6 +91,9 @@ class RobotContainer:
 
         self.cannon.setDefaultCommand(
             SetCannon(self.cannon, SetCannon.Mode.Off))
+        self.light.setDefaultCommand(
+            RelayControl(self.light.light,
+                         self.operatorInterface.backLightControl))
 
     def configureButtonBindings(self):
         """
@@ -131,11 +134,6 @@ class RobotContainer:
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl
         # ).whileHeld(HornHonk(self.light2))
-
-        commands2.button.JoystickButton(
-            *self.operatorInterface.honkControl2).whileHeld(
-                RelayControl(self.light,
-                             self.operatorInterface.backLightControl))
 
     def getAutonomousCommand(self) -> commands2.Command:
         return self.chooser.getSelected()

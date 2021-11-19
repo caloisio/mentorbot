@@ -7,14 +7,14 @@ class RelayControl(CommandBase):
     def __init__(self, controller: WPI_TalonSRX,
                  controlPercent: typing.Callable[[], float]) -> None:
         CommandBase.__init__(self)
-        self.horn = controller
-        self.horn.set(ControlMode.PercentOutput, 0.0)
-        self.controlPercent = controlPercent
-        self.setOutputPercent = lambda percent: self.horn.set(
+        self.control = controller
+        self.controlPercentCommand = controlPercent
+
+        self.setOutputPercent = lambda percent: self.control.set(
             ControlMode.PercentOutput, percent)
 
     def execute(self) -> None:
-        self.setOutputPercent(self.controlPercent())
+        self.setOutputPercent(self.controlPercentCommand())
 
     def end(self, interrupted: bool) -> None:
         self.setOutputPercent(0.0)
