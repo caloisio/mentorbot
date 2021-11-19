@@ -1,6 +1,6 @@
 from enum import Enum, auto
 from subsystems.cannonsubsystem import CannonSubsystem
-from commands2._impl import CommandBase
+from commands2 import CommandBase
 
 
 class SetCannon(CommandBase):

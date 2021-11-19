@@ -1,5 +1,5 @@
-from commands2._impl import SubsystemBase
-from ctre._ctre import WPI_TalonSRX
+from commands2 import SubsystemBase
+from ctre import WPI_TalonSRX
 import constants
 
 
