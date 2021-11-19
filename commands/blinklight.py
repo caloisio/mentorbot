@@ -30,3 +30,7 @@ class BlinkLight(CommandBase):
                 self.light.light.set(1.0)
             self.on = not self.on
             self.timer = self.timer % self.interval  # if go over take the remainder
+
+    def isFinished(self) -> bool:
+        return (not self.on) and (self.repeatAmount < 0) and (self.timer - 0.1
+                                                              <= 0)
