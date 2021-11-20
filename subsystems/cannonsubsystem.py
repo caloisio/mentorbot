@@ -11,19 +11,25 @@ class CannonSubsystem(SubsystemBase):
         self.fillSolonoid = Solenoid(constants.kPCMCannonCanID,
                                      constants.kCannonFillPCMID)
 
+        self.fillSolonoid.set(False)
+        self.launchSolonoid.set(True)
+
     def close(self) -> None:
         """close all the solonoids"""
-        self.launchSolonoid.set(False)
         self.fillSolonoid.set(False)
+        self.launchSolonoid.set(True)
+        # print("CLOSING")
 
     def fill(self) -> None:
         """begins filling staging tank"""
-        self.launchSolonoid.set(
-            False
-        )  #ensure air doesnt just flow out the end without being stored
-        self.fillSolonoid.set(True)
+        # self.launchSolonoid.set(
+        #     False
+        # )  #ensure air doesnt just flow out the end without being stored
+        self.fillSolonoid.toggle()
+        print(self.fillSolonoid.get())
+        print("FILLING")
 
-    def fire(self) -> None:
-        """the part where you yell "fire" and make people happy"""
-        self.launchSolonoid.set(True)
-        self.fillSolonoid.set(False)
+    def launch(self) -> None:
+        self.launchSolonoid.toggle()
+        print(self.launchSolonoid.get())
+

@@ -14,16 +14,16 @@ class SetCannon(CommandBase):
         self.setName(__class__.__name__)
         self.cannon = cannon
         self.mode = mode
-        self.addRequirements(cannon)
+        self.addRequirements([self.cannon])
 
         self.funcs = {
             SetCannon.Mode.Off: self.cannon.close,
             SetCannon.Mode.Fill: self.cannon.fill,
-            SetCannon.Mode.Launch: self.cannon.fire
+            SetCannon.Mode.Launch: self.cannon.launch
         }
+
+        self.isFinished = lambda: True
 
     def execute(self) -> None:
         self.funcs[self.mode]()
 
-    def end(self, interrupted: bool) -> None:
-        self.cannon.close()  #safely ensure cannon closes

@@ -1,7 +1,10 @@
+from wpilib._wpilib import Compressor
 from commands.blinklight import BlinkLight
 from commands2 import ParallelCommandGroup
+from commands.hornhonk import HornHonk
 from commands.setcannon import SetCannon
 from subsystems.cannonsubsystem import CannonSubsystem
+from subsystems.hornsubsystem import HornSubsystem
 from subsystems.lightsubsystem import LightSubsystem
 import wpilib
 
@@ -27,6 +30,7 @@ from subsystems.drivesubsystem import DriveSubsystem
 
 from operatorinterface import OperatorInterface
 
+from networktables import NetworkTables
 
 class RobotContainer:
     """
@@ -45,15 +49,17 @@ class RobotContainer:
         self.camera = CameraSubsystem()
         self.cannon = CannonSubsystem()
         self.light = LightSubsystem()
+        self.horn = HornSubsystem()
+
+        #compressor
+        self.compressor = Compressor(constants.kPCMCannonCanID)
 
         # horn
         # self.light = wpilib.(constants.kHornPWMPinLocation)
         # self.light2 = wpilib.Spark(constants.kHorn2PWMPinLocation)
         # self.light.setRaw(65535) #turn off horn by default
         # self.light2.setRaw(65535)
-
         # Autonomous routines
-
         # A simple auto routine that drives forward a specified distance, and then stops.
         self.simpleAuto = DriveDistance(
             constants.kAutoDriveDistance,
@@ -86,12 +92,12 @@ class RobotContainer:
             ))
 
         self.camera.setDefaultCommand(
-            RotateCamera(self.camera,
+            RotateCamera(self.camera,   
                          self.operatorInterface.cameraControls.leftRight,
                          self.operatorInterface.cameraControls.upDown))
 
-        self.cannon.setDefaultCommand(
-            SetCannon(self.cannon, SetCannon.Mode.Off))
+        # self.cannon.setDefaultCommand(
+        #     SetCannon(self.cannon, SetCannon.Mode.Off))
         self.light.setDefaultCommand(
             RelayControl(self.light, self.operatorInterface.lightControl))
 
@@ -115,16 +121,22 @@ class RobotContainer:
                 ResetDrive(self.drive))
 
         commands2.button.JoystickButton(
-            *self.operatorInterface.fillCannon).whenHeld(
+            *self.operatorInterface.fillCannon).whenPressed(
                 SetCannon(self.cannon, SetCannon.Mode.Fill))
 
+
         commands2.button.JoystickButton(
-            *self.operatorInterface.launchCannon).whenHeld(
+            *self.operatorInterface.launchCannon).whenPressed(
                 SetCannon(self.cannon, SetCannon.Mode.Launch))
 
         commands2.button.POVButton(
             *self.operatorInterface.returnPositionInput).whenPressed(
                 SetReturn(self.drive))
+
+        commands2.button.JoystickButton(
+            *self.operatorInterface.closeValves).whenPressed(
+                SetCannon(self.cannon, SetCannon.Mode.Off)
+            )
 
         commands2.button.POVButton(
             *self.operatorInterface.returnModeControl).whileHeld(
@@ -132,7 +144,13 @@ class RobotContainer:
                     ReturnDrive(
                         self.drive, self.operatorInterface.scaler,
                         self.operatorInterface.chassisControls.rotation),
-                    BlinkLight(self.light, 1, 200)))
+                    BlinkLight(self.light, 1, 100)))
+        
+        commands2.button.JoystickButton(
+            *self.operatorInterface.hornControl).whileHeld(
+                HornHonk(self.horn)
+            )
+
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl

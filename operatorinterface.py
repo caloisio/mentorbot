@@ -101,6 +101,8 @@ class OperatorInterface:
                            )  # button to fill the cannon for firing
         self.launchCannon = (self.driveController,
                              driveControls["launchCannon"])  #FIRE!
+        self.closeValves = (self.driveController,
+                             driveControls["closeValves"])
 
         self.coordinateModeControl = (
             self.driveController, driveControls["fieldRelative"]
@@ -127,6 +129,8 @@ class OperatorInterface:
         self.lightControl = Abs(lambda: self.driveController.getRawAxis(
             driveControls["lightControl"]
         ))  # control for the lights (trigger axis by default)
+
+        self.hornControl = (self.driveController, driveControls["horn"])
 
         self.chassisControls = HolonomicInput(  # drive controls, allows for any directional movement and rotation
             Invert(  # forwards / backwards
