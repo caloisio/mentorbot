@@ -1,6 +1,6 @@
-# mentorbot
+# T Shirt Cannon
 
-Code for the FRC 1757 teaching platform robot
+Code for the FRC 1757 pre season pep rally
 
 ## Installation
 
@@ -12,23 +12,31 @@ Code for the FRC 1757 teaching platform robot
 
 [3.9.6 amd64](https://www.python.org/ftp/python/3.9.6/python-3.9.6-amd64.exe)
 
-### VS Code
+### Any text editor
 
+VS Code is reccomended but not strictly required
 [VS Code](https://code.visualstudio.com)
 
-### FRC Game Tools
+alternative
+[Neovim](https://neovim.io)
+
+### the following are only required in order to run on real hardware
+
+#### FRC Game Tools
 
 [FRC Game Tools](https://www.ni.com/en-us/support/downloads/drivers/download.frc-game-tools.html#369633)
 
-### FRC Radio Configuration Utility
+#### FRC Radio Configuration Utility
 
 [FRC Configuration Utility](https://firstfrc.blob.core.windows.net/frc2020/Radio/FRC_Radio_Configuration_20_0_0.zip)
 
-### CTRE Phoenix
+#### CTRE Phoenix
 
 [Phoenix Tuner](https://github.com/CrossTheRoadElec/Phoenix-Releases/releases)
 
 ## Setup
+
+this is skippable if you desire to just use the simulator
 
 ### roboRIO
 
@@ -85,7 +93,7 @@ Code for the FRC 1757 teaching platform robot
 
 #### Create virtualenv (if not previously done)
 
-Recommend placing the virtualenv in the `mentorbot` repo folder under `.venv` (to keep everything together) however the virtualenv is local to your system and should not be uploaded (ignored in `.gitignore`)
+Recommend placing the virtualenv in the `TShirtCannon` repo folder under `.venv` (to keep everything together) however the virtualenv is local to your system and should not be uploaded (ignored in `.gitignore`)
 
 ```bash
 cd <path-to-mentorbot-repo>
