@@ -73,74 +73,77 @@ class OperatorInterface:
                 file
             )  # get the generau control scheme defined in controlInterface.json
 
-        defaultControls = controlScheme[controlScheme["default"] + (
+        driveControls = controlScheme[controlScheme["drive"] + (
             "_SIM" if not RobotBase.isReal() else "_DRIVERSTATION"
         )]  # get controls, accounting for the difference in the simulator and the actual driverstation
 
+        camControls = controlScheme[controlScheme["camera"] + (
+            "_SIM" if not RobotBase.isReal() else "_DRIVERSTATION")]
+
         self.driveController = Joystick(
             constants.kXboxControllerPort)  # main drive controller
-        self.cameraController = XboxController(
+        self.cameraController = Joystick(
             constants.kCameraControllerPort)  # camera controller
 
         self.scaler = lambda: (
-            self.driveController.getRawAxis(defaultControls["scaler"]) - 1
+            self.driveController.getRawAxis(driveControls["scaler"]) - 1
         ) * -0.5  # motor scaler, used to decrease the velocity through a single control
 
         self.returnPositionInput = (
-            self.driveController, defaultControls["setWaypoint"], 0
+            self.driveController, driveControls["setWaypoint"], 0
         )  # D Pad / POV button to set a waypoint to return to later
 
         self.returnModeControl = (
-            self.driveController, defaultControls["goToWaypoint"], 0
+            self.driveController, driveControls["goToWaypoint"], 0
         )  # D Pad / POV button to return to the waypoint defined above
 
-        self.fillCannon = (self.driveController, defaultControls["fillCannon"]
+        self.fillCannon = (self.driveController, driveControls["fillCannon"]
                            )  # button to fill the cannon for firing
         self.launchCannon = (self.driveController,
-                             defaultControls["launchCannon"])  #FIRE!
+                             driveControls["launchCannon"])  #FIRE!
 
         self.coordinateModeControl = (
-            self.driveController, defaultControls["fieldRelative"]
+            self.driveController, driveControls["fieldRelative"]
         )  # switch from robot centric and field centric
 
         self.resetSwerveControl = (
-            self.driveController, defaultControls["resetSwerveControl"]
+            self.driveController, driveControls["resetSwerveControl"]
         )  # reset swerve drive orientation and motors
 
         self.cameraControls = CameraControl(  # camera related axis control
             Invert(  # left/right
                 Deadband(
-                    lambda: self.cameraController.getX(GenericHID.Hand.
-                                                       kLeftHand),
+                    lambda: self.cameraController.getRawAxis(camControls[
+                        "leftRight"]),
                     constants.kXboxJoystickDeadband,
                 )),
             Invert(  # up/down
                 Deadband(
-                    lambda: self.cameraController.getY(GenericHID.Hand.
-                                                       kLeftHand),
+                    lambda: self.cameraController.getRawAxis(camControls[
+                        "upDown"]),
                     constants.kXboxJoystickDeadband,
                 )))
 
         self.lightControl = Abs(lambda: self.driveController.getRawAxis(
-            defaultControls["lightControl"]
+            driveControls["lightControl"]
         ))  # control for the lights (trigger axis by default)
 
         self.chassisControls = HolonomicInput(  # drive controls, allows for any directional movement and rotation
             Invert(  # forwards / backwards
                 Deadband(
-                    lambda: self.driveController.getRawAxis(defaultControls[
+                    lambda: self.driveController.getRawAxis(driveControls[
                         "forwardsBackwards"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
             Invert(  # left / right
                 Deadband(
-                    lambda: self.driveController.getRawAxis(defaultControls[
+                    lambda: self.driveController.getRawAxis(driveControls[
                         "sideToSide"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
             Invert(
                 Deadband(  # rotational movement
-                    lambda: self.driveController.getRawAxis(defaultControls[
+                    lambda: self.driveController.getRawAxis(driveControls[
                         "rotation"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),

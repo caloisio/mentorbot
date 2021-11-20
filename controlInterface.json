@@ -1,7 +1,8 @@
 {
-  "default": "XBOX",
+  "drive": "XBOX_DRIVE",
+  "camera": "XBOX_CAMERA",
 
-  "XBOX_SIM": {
+  "XBOX_DRIVE_SIM": {
     "forwardsBackwards": 1,
     "sideToSide": 0,
     "rotation": 3,
@@ -17,7 +18,7 @@
     "goToWaypoint": 0
   },
 
-  "XBOX_DRIVERSTATION": {
+  "XBOX_DRIVE_DRIVERSTATION": {
     "forwardsBackwards": 1,
     "sideToSide": 0,
     "rotation": 3,
@@ -30,5 +31,14 @@
 
     "setWaypoint": 180,
     "goToWaypoint": 0
+  },
+
+  "XBOX_CAMERA_SIM": {
+    "leftRight": 0,
+    "upDown": 1
+  },
+  "XBOX_CAMERA_SIM": {
+    "leftRight": 0,
+    "upDown": 1
   }
 }
