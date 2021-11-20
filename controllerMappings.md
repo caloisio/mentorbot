@@ -20,9 +20,9 @@
 
 | Axis               | Number |
 | ------------------ | ------ |
-| Right Stick X axis | 0      |
-| Right Stick Y axis | 1      |
-| Right Trigger      | 2      |
-| Left Stick X axis  | 3      |
-| Left Stick Y axis  | 4      |
-| Left Trigger       | 5      |
+| Left Stick X axis  | 0      |
+| Left Stick Y axis  | 1      |
+| Left Trigger       | 2      |
+| Right Stick X axis | 3      |
+| Right Stick Y axis | 4      |
+| Right Trigger      | 5      |
