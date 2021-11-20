@@ -11,6 +11,7 @@ AnalogInput = typing.Callable[[], float]
 
 
 def Deadband(input: AnalogInput, deadband: float) -> AnalogInput:
+    """take a function and reture a function which if below a threshold returns 0"""
     def withDeadband() -> float:
         value = input()
         if abs(value) <= deadband:
@@ -22,6 +23,7 @@ def Deadband(input: AnalogInput, deadband: float) -> AnalogInput:
 
 
 def Abs(input: AnalogInput) -> AnalogInput:
+    """takes a function and returns the absolute value of that function"""
     def absolute() -> float:
         inp = input()
         return -1 * inp if inp < 0 else inp
@@ -30,6 +32,7 @@ def Abs(input: AnalogInput) -> AnalogInput:
 
 
 def Invert(input: AnalogInput) -> AnalogInput:
+    """inverts the output of a function"""
     def invert() -> float:
         return -1 * input()
 
@@ -37,12 +40,15 @@ def Invert(input: AnalogInput) -> AnalogInput:
 
 
 class CameraControl:
+    """class to contain the data related to controlling a camera"""
     def __init__(self, leftRight: AnalogInput, upDown: AnalogInput):
         self.leftRight = leftRight
         self.upDown = upDown
 
 
 class HolonomicInput:
+    """class containing 3 axis of motion that make a system holonomic
+    all values are functions"""
     def __init__(
         self,
         forwardsBackwards: AnalogInput,
@@ -63,88 +69,78 @@ class OperatorInterface:
         with open(
                 path.join(path.dirname(path.realpath(__file__)),
                           'controlInterface.json'), 'r') as file:
-            controlScheme = json.load(file)
+            controlScheme = json.load(
+                file
+            )  # get the generau control scheme defined in controlInterface.json
 
         defaultControls = controlScheme[controlScheme["default"] + (
-            "_SIM" if not RobotBase.isReal() else "_DRIVERSTATION")]
+            "_SIM" if not RobotBase.isReal() else "_DRIVERSTATION"
+        )]  # get controls, accounting for the difference in the simulator and the actual driverstation
 
-        self.xboxController = Joystick(constants.kXboxControllerPort)
-        self.cameraController = XboxController(constants.kCameraControllerPort)
-        self.translationController = Joystick(
-            constants.kTranslationControllerPort)
-        self.rotationController = Joystick(constants.kRotationControllerPort)
+        self.driveController = Joystick(
+            constants.kXboxControllerPort)  # main drive controller
+        self.cameraController = XboxController(
+            constants.kCameraControllerPort)  # camera controller
 
-        self.scaler = lambda: (self.xboxController.getRawAxis(defaultControls[
-            "scaler"]) - 1) * -0.5
+        self.scaler = lambda: (
+            self.driveController.getRawAxis(defaultControls["scaler"]) - 1
+        ) * -0.5  # motor scaler, used to decrease the velocity through a single control
 
-        self.returnPositionInput = (self.xboxController,
-                                    defaultControls["setWaypoint"], 0)
+        self.returnPositionInput = (
+            self.driveController, defaultControls["setWaypoint"], 0
+        )  # D Pad / POV button to set a waypoint to return to later
 
-        self.returnModeControl = (self.xboxController,
-                                  defaultControls["goToWaypoint"], 0)
+        self.returnModeControl = (
+            self.driveController, defaultControls["goToWaypoint"], 0
+        )  # D Pad / POV button to return to the waypoint defined above
 
-        self.fillCannon = (self.xboxController, defaultControls["fillCannon"])
-        self.launchCannon = (self.xboxController,
-                             defaultControls["launchCannon"])
+        self.fillCannon = (self.driveController, defaultControls["fillCannon"]
+                           )  # button to fill the cannon for firing
+        self.launchCannon = (self.driveController,
+                             defaultControls["launchCannon"])  #FIRE!
 
-        self.coordinateModeControl = (self.xboxController,
-                                      defaultControls["fieldRelative"])
+        self.coordinateModeControl = (
+            self.driveController, defaultControls["fieldRelative"]
+        )  # switch from robot centric and field centric
 
-        self.resetSwerveControl = (self.xboxController,
-                                   defaultControls["resetSwerveControl"])
+        self.resetSwerveControl = (
+            self.driveController, defaultControls["resetSwerveControl"]
+        )  # reset swerve drive orientation and motors
 
-        # self.chassisControls = HolonomicInput(
-        #     Invert(
-        #         Deadband(
-        #             lambda: self.translationController.getY(GenericHID.Hand.kLeftHand),
-        #             constants.kKeyboardJoystickDeadband,
-        #         )
-        #     ),
-        #     Invert(
-        #         Deadband(
-        #             lambda: self.translationController.getX(GenericHID.Hand.kLeftHand),
-        #             constants.kKeyboardJoystickDeadband,
-        #         )
-        #     ),
-        #     Invert(
-        #         Deadband(
-        #             lambda: self.rotationController.getX(GenericHID.Hand.kRightHand),
-        #             constants.kKeyboardJoystickDeadband,
-        #         )
-        #     ),
-        # )
-
-        self.cameraControls = CameraControl(
-            Invert(
+        self.cameraControls = CameraControl(  # camera related axis control
+            Invert(  # left/right
                 Deadband(
                     lambda: self.cameraController.getX(GenericHID.Hand.
                                                        kLeftHand),
                     constants.kXboxJoystickDeadband,
                 )),
-            Invert(
+            Invert(  # up/down
                 Deadband(
                     lambda: self.cameraController.getY(GenericHID.Hand.
                                                        kLeftHand),
                     constants.kXboxJoystickDeadband,
                 )))
-        self.backLightControl = Abs(lambda: self.xboxController.getRawAxis(
-            defaultControls["lightControl"]))
-        self.chassisControls = HolonomicInput(
-            Invert(
+
+        self.lightControl = Abs(lambda: self.driveController.getRawAxis(
+            defaultControls["lightControl"]
+        ))  # control for the lights (trigger axis by default)
+
+        self.chassisControls = HolonomicInput(  # drive controls, allows for any directional movement and rotation
+            Invert(  # forwards / backwards
                 Deadband(
-                    lambda: self.xboxController.getRawAxis(defaultControls[
+                    lambda: self.driveController.getRawAxis(defaultControls[
                         "forwardsBackwards"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
-            Invert(
+            Invert(  # left / right
                 Deadband(
-                    lambda: self.xboxController.getRawAxis(defaultControls[
+                    lambda: self.driveController.getRawAxis(defaultControls[
                         "sideToSide"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
             Invert(
-                Deadband(
-                    lambda: self.xboxController.getRawAxis(defaultControls[
+                Deadband(  # rotational movement
+                    lambda: self.driveController.getRawAxis(defaultControls[
                         "rotation"]) * self.scaler(),
                     constants.kXboxJoystickDeadband,
                 )),
