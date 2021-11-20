@@ -77,9 +77,11 @@ class OperatorInterface:
         self.scaler = lambda: (self.xboxController.getRawAxis(defaultControls[
             "scaler"]) - 1) * -0.5
 
-        self.returnPositionInput = (self.xboxController, 180, 0)
+        self.returnPositionInput = (self.xboxController,
+                                    defaultControls["setWaypoint"], 0)
 
-        self.returnModeControl = (self.xboxController, 0, 0)
+        self.returnModeControl = (self.xboxController,
+                                  defaultControls["goToWaypoint"], 0)
 
         self.fillCannon = (self.xboxController, defaultControls["fillCannon"])
         self.launchCannon = (self.xboxController,

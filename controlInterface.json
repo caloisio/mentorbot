@@ -8,10 +8,13 @@
     "scaler": 2,
     "lightControl": 5,
 
-    "fieldRelative": 10,
-    "resetSwerveControl": 2,
-    "launchCannon": 7,
-    "fillCannon": 6
+    "fieldRelative": 6,
+    "resetSwerveControl": 3,
+    "launchCannon": 8,
+    "fillCannon": 7,
+
+    "setWaypoint": 180,
+    "goToWaypoint": 0
   },
 
   "XBOX_DRIVERSTATION": {

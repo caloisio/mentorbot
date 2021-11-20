@@ -6,17 +6,17 @@
 
 | Button                  | Number |
 | ----------------------- | ------ |
-| A                       | 0      |
-| B                       | 1      |
-| X                       | 2      |
-| Y                       | 3      |
-| Left Bumper (LB)        | 4      |
-| Right Bumper (RB)       | 5      |
-| Select                  | 6      |
-| Start                   | 7      |
-| Xbox Button             | 8      |
-| Left Thumb Button (L3)  | 9      |
-| Right Thumb Button (R3) | 10     |
+| A                       | 1      |
+| B                       | 2      |
+| X                       | 3      |
+| Y                       | 4      |
+| Left Bumper (LB)        | 5      |
+| Right Bumper (RB)       | 6      |
+| Select                  | 7      |
+| Start                   | 8      |
+| Xbox Button             | 9      |
+| Left Thumb Button (L3)  | 10     |
+| Right Thumb Button (R3) | 11     |
 
 | Axis               | Number |
 | ------------------ | ------ |
