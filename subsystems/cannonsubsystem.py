@@ -16,7 +16,7 @@ class CannonSubsystem(SubsystemBase):
         self.fillSolonoid.set(False)
         self.launchSolonoid.set(0.0)
 
-    def voltToPsi(self, pressureinput: float, voltmin: float, voltmax: float, pressuremin: float, pressuremax: float) -> None:
+    def map(pressureinput: float, voltmin: float, voltmax: float, pressuremin: float, pressuremax: float) -> None:
         return (pressureinput - pressuremin) * ((voltmax - voltmin) / (pressuremax - pressuremin)) + voltmin
 
 
@@ -24,7 +24,7 @@ class CannonSubsystem(SubsystemBase):
         """close all the solonoids"""
         self.fillSolonoid.set(False)
         self.launchSolonoid.set(0.0)
-        print(self.voltToPsi(self.pressure.getVoltage(), constants.kVoltageOutMin,  constants.kVoltageOutMax, constants.kPressureInMin, constants.kPressureInMax))
+        print(self.map(self.pressure.getVoltage(), constants.kVoltageOutMin,  constants.kVoltageOutMax, constants.kPressureInMin, constants.kPressureInMax))
         # print("CLOSING")
 
     def fill(self) -> None:

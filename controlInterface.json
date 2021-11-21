@@ -1,5 +1,5 @@
 {
-  "drive": "XBOX_DRIVE",
+  "drive": "THRUSTMASTER_DRIVE",
   "camera": "XBOX_CAMERA",
   "lightsControlledByCamera": true,
 
@@ -115,13 +115,13 @@
     "leftRight": 0,
     "upDown": 1,
     "light": 2,
-    "horn": 5
+    "horn": 3
   },
   "XBOX_CAMERA_DRIVERSTATION": {
     "leftRight": 0,
     "upDown": 1,
     "light": 2,
-    "horn": 5
+    "horn": 3
   },
   
   "PLAYSTATION_CAMERA_SIM": {

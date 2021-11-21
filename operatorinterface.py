@@ -5,6 +5,7 @@ import typing
 import json
 
 import constants
+from subsystems.cannonsubsystem import CannonSubsystem
 
 AnalogInput = typing.Callable[[], float]
 
@@ -141,7 +142,7 @@ class OperatorInterface:
                 lambda: self.cameraController.getRawAxis(camControls["horn"]), constants.kXboxJoystickDeadband)
         elif controlScheme["camera"] == "PLAYSTATION_CAMERA":
             self.hornControl = Deadband(
-                lambda: self.cameraController.getRawAxis(camControls["horn"]),
+                lambda: CannonSubsystem.map(self.cameraController.getRawAxis(camControls["horn"]), -1, 1, 0, 1),
                 constants.kXboxJoystickDeadband)
 
         self.chassisControls = HolonomicInput(  # drive controls, allows for any directional movement and rotation
