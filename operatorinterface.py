@@ -1,6 +1,5 @@
 from os import path
-from wpilib import Joystick, XboxController, RobotBase
-from wpilib.interfaces import GenericHID
+from wpilib import Joystick, RobotBase
 
 import typing
 import json

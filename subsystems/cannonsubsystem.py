@@ -1,6 +1,5 @@
 from commands2 import SubsystemBase
 from wpilib import Relay
-import wpilib
 import constants
 
 

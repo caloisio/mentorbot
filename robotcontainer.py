@@ -30,8 +30,6 @@ from subsystems.drivesubsystem import DriveSubsystem
 
 from operatorinterface import OperatorInterface
 
-from networktables import NetworkTables
-
 
 class RobotContainer:
     """
