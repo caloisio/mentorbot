@@ -1,8 +1,8 @@
-### controller mappings guide
+# controller mappings guide
 
 ## XBOX
 
-# SIM / Driverstation
+### SIM / Driverstation
 
 | Button                  | Number |
 | ----------------------- | ------ |
