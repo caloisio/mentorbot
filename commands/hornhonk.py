@@ -16,7 +16,7 @@ class HornHonk(CommandBase):
 
     def execute(self) -> None:
 
-        self.horn.horn.set(self.hornOutput())
+        self.horn.horn.set(self.hornStrength())
 
     def end(self, interrupted: bool) -> None:
-        self.horn.horn.set(0.0)
+        self.hornOutput(0.0)
