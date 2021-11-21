@@ -54,3 +54,31 @@
 | Left Trigger       | 3      |
 | Right Trigger      | 4      |
 | Right Stick Y axis | 5      |
+
+## Thrustmaster 
+
+| Button                           | Number |
+| -------------------------------- | ------ |
+| trigger                          | 1      |
+| bottom button on top of joystick | 2      |
+| left button on top of joystick   | 3      |
+| right button on top of joystick  | 4      |
+| right button set, right top      | 5      |
+| right button set, middle top     | 6      |
+| right button set, left top       | 7      |
+| right button set, left bottom    | 8      |
+| right button set, middle bottom  | 9      |
+| right button set, right bottom   | 10     |
+| left button set, left top        | 11     |
+| left button set, middle top      | 12     |
+| left button set, right top       | 13     |
+| left button set, right bottom    | 14     |
+| left button set, middle bottom   | 15     |
+| left button set, left bottom     | 16     |
+
+| Axis           | Number |
+| -------------- | ------ |
+| Stick X Axis   | 0      |
+| Stick Y Axis   | 1      |
+| Stick rotation | 2      |
+| bottom slider  | 3      |
