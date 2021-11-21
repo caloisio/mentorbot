@@ -2,7 +2,7 @@ from commands2 import SubsystemBase
 from ctre import WPI_VictorSPX
 from wpilib import Solenoid
 import wpilib
-from wpilib._wpilib import AnalogInput
+from wpilib import AnalogInput
 import constants
 
 
@@ -16,11 +16,15 @@ class CannonSubsystem(SubsystemBase):
         self.fillSolonoid.set(False)
         self.launchSolonoid.set(0.0)
 
+    def voltToPsi(self, pressureinput: float, voltmin: float, voltmax: float, pressuremin: float, pressuremax: float) -> None:
+        return (pressureinput - pressuremin) * ((voltmax - voltmin) / (pressuremax - pressuremin)) + voltmin
+
+
     def close(self) -> None:
         """close all the solonoids"""
         self.fillSolonoid.set(False)
         self.launchSolonoid.set(0.0)
-        #print(self.pressure.getAccumulatorValue())
+        print(self.voltToPsi(self.pressure.getVoltage(), constants.kVoltageOutMin,  constants.kVoltageOutMax, constants.kPressureInMin, constants.kPressureInMax))
         # print("CLOSING")
 
     def fill(self) -> None:

@@ -314,3 +314,9 @@ fill goes between 120psi tank and small tank"""
 kCannonLaunchVictorDeviceID = 61
 
 kCannonPressureAnalogInput = 0
+
+# Main air tank pressure sensor values
+kVoltageOutMin = 0.0
+kVoltageOutMax = 4.5
+kPressureInMin = 0
+kPressureInMax = 200
