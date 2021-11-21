@@ -44,6 +44,9 @@ class CameraControl:
         self.leftRight = leftRight
         self.upDown = upDown
 
+class HornControl:
+    def __init__(self, amount: AnalogInput) -> None:
+        self.amount = amount
 
 class HolonomicInput:
     """class containing 3 axis of motion that make a system holonomic
@@ -129,7 +132,12 @@ class OperatorInterface:
             if not controlScheme["lightsControlledByCamera"] else camControls[
                 "light"]))  # control for the lights (trigger axis by default)
 
-        self.hornControl = (self.driveController, driveControls["horn"])
+        #self.hornControl = (self.driveController, driveControls["horn"]) This is reg button version
+
+        if controlScheme["camera"] == "XBOX_CAMERA" :
+            self.hornControl = Deadband(lambda: self.cameraController.getRawAxis(camControls["horn"]) * 2 - 1, constants.kXboxJoystickDeadband)
+        elif controlScheme["camera"] == "PLAYSTATION_CAMERA":
+            self.hornControl = Deadband(lambda: self.cameraController.getRawAxis(camControls["horn"]), constants.kXboxJoystickDeadband)
 
         self.chassisControls = HolonomicInput(  # drive controls, allows for any directional movement and rotation
             Invert(  # forwards / backwards

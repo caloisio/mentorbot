@@ -26,3 +26,31 @@
 | Right Stick X axis | 3      |
 | Right Stick Y axis | 4      |
 | Right Trigger      | 5      |
+
+## Playstation
+
+| Button                  | Number |
+| ----------------------- | ------ |
+| Square                  | 1      |
+| X                       | 2      |
+| Circle                  | 3      |
+| Triangle                | 4      |
+| Left Bumper (LB)        | 5      |
+| Right Bumper (RB)       | 6      |
+| Left Trigger            | 7      |
+| Right Trigger           | 8      |
+| Share button            | 9      |
+| Option button           | 10     |
+| Pressed left stick      | 11     |
+| Pressed right stick     | 12     |
+| Playstation button      | 13     |
+| Middle rectangle button | 14     |
+
+| Axis               | Number |
+| ------------------ | ------ |
+| Left Stick X axis  | 0      |
+| Left Stick Y axis  | 1      |
+| Right Stick X axis | 2      |
+| Left Trigger       | 3      |
+| Right Trigger      | 4      |
+| Right Stick Y axis | 5      |

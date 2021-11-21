@@ -101,6 +101,10 @@ class RobotContainer:
         self.light.setDefaultCommand(
             RelayControl(self.light, self.operatorInterface.lightControl))
 
+        self.horn.setDefaultCommand(
+            HornHonk(self.horn, self.operatorInterface.hornControl)
+        )
+
     def configureButtonBindings(self):
         """
         Use this method to define your button->command mappings. Buttons can be created by
@@ -143,9 +147,6 @@ class RobotContainer:
                         self.drive, self.operatorInterface.scaler,
                         self.operatorInterface.chassisControls.rotation),
                     BlinkLight(self.light, 1, 100)))
-
-        commands2.button.JoystickButton(
-            *self.operatorInterface.hornControl).whileHeld(HornHonk(self.horn))
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl

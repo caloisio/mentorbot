@@ -74,15 +74,66 @@
     "setWaypoint": 180,
     "goToWaypoint": 0
   },
+  
+  "PLAYSTATION_DRIVE_DRIVERSTATION": {
+    "forwardsBackwards": 1,
+    "sideToSide": 0,
+    "rotation": 2,
+    "scaler": 3,
+    "lightControl": 4,
+
+    "fieldRelative": 6,
+    "resetSwerveControl": 3,
+    "launchCannon": 8, 
+    "fillCannon": 7,
+    "horn": 5,
+    "closeValves": 13,
+
+    "setWaypoint": 180,
+    "goToWaypoint": 0
+  },
+
+  "PLAYSTATION_DRIVE_SIM": {
+    "forwardsBackwards": 1,
+    "sideToSide": 0,
+    "rotation": 2,
+    "scaler": 3,
+    "lightControl": 4,
+
+    "fieldRelative": 6,
+    "resetSwerveControl": 3,
+    "launchCannon": 8, 
+    "fillCannon": 7,
+    "horn": 5,
+    "closeValves": 13,
+
+    "setWaypoint": 180,
+    "goToWaypoint": 0
+  },
 
   "XBOX_CAMERA_SIM": {
     "leftRight": 0,
     "upDown": 1,
-    "light": 2
+    "light": 2,
+    "horn": 5
   },
   "XBOX_CAMERA_DRIVERSTATION": {
     "leftRight": 0,
     "upDown": 1,
-    "light": 2
+    "light": 2,
+    "horn": 5
+  },
+  
+  "PLAYSTATION_CAMERA_SIM": {
+    "leftRight": 0,
+    "upDown": 1,
+    "light": 3,
+    "horn": 4
+  },
+  "PLAYSTATION_CAMERA_DRIVERSTATION": {
+    "leftRight": 0,
+    "upDown": 1,
+    "light": 3,
+    "horn": 4
   }
 }
