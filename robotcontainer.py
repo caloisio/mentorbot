@@ -102,8 +102,7 @@ class RobotContainer:
             RelayControl(self.light, self.operatorInterface.lightControl))
 
         self.horn.setDefaultCommand(
-            HornHonk(self.horn, self.operatorInterface.hornControl)
-        )
+            HornHonk(self.horn, self.operatorInterface.hornControl))
 
     def configureButtonBindings(self):
         """
