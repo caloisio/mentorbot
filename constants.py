@@ -312,5 +312,5 @@ kCannonFillPCMID = 5
 fill goes between 120psi tank and small tank"""
 
 # cannon but in spike mode
-kCannonLaunchSpikePWMID = 1
-kCannonFillSpikePWMID = 2
+kCannonLaunchSpikePWMID = 0
+kCannonFillSpikePWMID = 1
