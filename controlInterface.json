@@ -1,6 +1,6 @@
 {
-  "drive": "PLAYSTATION_DRIVE",
-  "camera": "PLAYSTATION_CAMERA",
+  "drive": "XBOX_DRIVE",
+  "camera": "XBOX_CAMERA",
   "lightsControlledByCamera": true,
 
   "XBOX_DRIVE_SIM": {
@@ -15,7 +15,7 @@
     "launchCannon": 8,
     "fillCannon": 7,
     "horn": 5,
-    "closeValves": 9,
+    "closeValves": 10,
 
     "setWaypoint": 180,
     "goToWaypoint": 0
@@ -33,7 +33,7 @@
     "launchCannon": 8,
     "fillCannon": 7,
     "horn": 5,
-    "closeValves": 9,
+    "closeValves": 4,
 
     "setWaypoint": 180,
     "goToWaypoint": 0

@@ -138,8 +138,7 @@ class OperatorInterface:
 
         if controlScheme["camera"] == "XBOX_CAMERA":
             self.hornControl = Deadband(
-                lambda: self.cameraController.getRawAxis(camControls["horn"]) *
-                2 - 1, constants.kXboxJoystickDeadband)
+                lambda: self.cameraController.getRawAxis(camControls["horn"]), constants.kXboxJoystickDeadband)
         elif controlScheme["camera"] == "PLAYSTATION_CAMERA":
             self.hornControl = Deadband(
                 lambda: self.cameraController.getRawAxis(camControls["horn"]),
