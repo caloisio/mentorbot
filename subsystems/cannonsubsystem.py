@@ -22,7 +22,7 @@ class CannonSubsystem(SubsystemBase):
         """close all the solonoids"""
         self.fillSolonoid.set(False)
         self.launchSolonoid.set(0.0)
-        print(self.map(self.pressure.getVoltage(), constants.kVoltageOutMin,  constants.kVoltageOutMax, constants.kPressureInMin, constants.kPressureInMax))
+        print(map(self.pressure.getVoltage(), constants.kVoltageOutMin,  constants.kVoltageOutMax, constants.kPressureInMin, constants.kPressureInMax))
         # print("CLOSING")
 
     def fill(self) -> None:
