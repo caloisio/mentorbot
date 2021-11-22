@@ -132,6 +132,12 @@ class OperatorInterface:
 
         self.lightControl = Abs(lambda: self.driveController.getRawAxis(
             driveControls["lightControl"]
+<<<<<<< HEAD
+            if controlScheme["lightsControlledByCamera"] else camControls[
+                "light"]))  # control for the lights (trigger axis by default)
+
+        self.hornControl = (self.driveController, driveControls["horn"])
+=======
             if not controlScheme["lightsControlledByCamera"] else camControls[
                 "light"]))  # control for the lights (trigger axis by default)
 
@@ -144,6 +150,7 @@ class OperatorInterface:
             self.hornControl = Deadband(
                 lambda: CannonSubsystem.map(self.cameraController.getRawAxis(camControls["horn"]), -1, 1, 0, 1),
                 constants.kXboxJoystickDeadband)
+>>>>>>> 4c4fa1f751d5a0fce404013934471e12512165c2
 
         self.chassisControls = HolonomicInput(  # drive controls, allows for any directional movement and rotation
             Invert(  # forwards / backwards

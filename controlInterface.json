@@ -1,5 +1,5 @@
 {
-  "drive": "THRUSTMASTER_DRIVE",
+  "drive": "XBOX_DRIVE",
   "camera": "XBOX_CAMERA",
   "lightsControlledByCamera": true,
 
@@ -15,7 +15,11 @@
     "launchCannon": 8,
     "fillCannon": 7,
     "horn": 5,
+<<<<<<< HEAD
+    "closeValves": 9,
+=======
     "closeValves": 10,
+>>>>>>> 4c4fa1f751d5a0fce404013934471e12512165c2
 
     "setWaypoint": 180,
     "goToWaypoint": 0
@@ -33,7 +37,11 @@
     "launchCannon": 8,
     "fillCannon": 7,
     "horn": 5,
+<<<<<<< HEAD
+    "closeValves": 9,
+=======
     "closeValves": 4,
+>>>>>>> 4c4fa1f751d5a0fce404013934471e12512165c2
 
     "setWaypoint": 180,
     "goToWaypoint": 0
@@ -70,6 +78,8 @@
     "fillCannon": 2,
     "horn": 3,
     "closeValves": 14,
+<<<<<<< HEAD
+=======
 
     "setWaypoint": 180,
     "goToWaypoint": 0
@@ -106,6 +116,7 @@
     "fillCannon": 7,
     "horn": 5,
     "closeValves": 13,
+>>>>>>> 4c4fa1f751d5a0fce404013934471e12512165c2
 
     "setWaypoint": 180,
     "goToWaypoint": 0
@@ -114,12 +125,19 @@
   "XBOX_CAMERA_SIM": {
     "leftRight": 0,
     "upDown": 1,
+<<<<<<< HEAD
+    "light": 2
+=======
     "light": 2,
     "horn": 3
+>>>>>>> 4c4fa1f751d5a0fce404013934471e12512165c2
   },
   "XBOX_CAMERA_DRIVERSTATION": {
     "leftRight": 0,
     "upDown": 1,
+<<<<<<< HEAD
+    "light": 2
+=======
     "light": 2,
     "horn": 3
   },
@@ -135,5 +153,6 @@
     "upDown": 1,
     "light": 3,
     "horn": 4
+>>>>>>> 4c4fa1f751d5a0fce404013934471e12512165c2
   }
 }

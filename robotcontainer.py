@@ -31,6 +31,7 @@ from subsystems.drivesubsystem import DriveSubsystem
 from operatorinterface import OperatorInterface
 
 
+
 class RobotContainer:
     """
     This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -146,6 +147,12 @@ class RobotContainer:
                         self.drive, self.operatorInterface.scaler,
                         self.operatorInterface.chassisControls.rotation),
                     BlinkLight(self.light, 1, 100)))
+<<<<<<< HEAD
+
+        commands2.button.JoystickButton(
+            *self.operatorInterface.hornControl).whileHeld(HornHonk(self.horn))
+=======
+>>>>>>> 4c4fa1f751d5a0fce404013934471e12512165c2
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl
