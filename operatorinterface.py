@@ -102,6 +102,10 @@ class OperatorInterface:
             self.driveController, driveControls["goToWaypoint"], 0
         )  # D Pad / POV button to return to the waypoint defined above
 
+        self.pulseTheLights = (
+            self.cameraController, camControls["pulseTheLights"], 0
+        )
+
         self.fillCannon = (self.driveController, driveControls["fillCannon"]
                            )  # button to fill the cannon for firing
         self.launchCannon = (self.driveController,

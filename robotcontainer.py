@@ -2,6 +2,7 @@ from wpilib import Compressor
 from commands.blinklight import BlinkLight
 from commands2 import ParallelCommandGroup
 from commands.hornhonk import HornHonk
+from commands.pulselight import PulseLight
 from commands.setcannon import SetCannon
 from subsystems.cannonsubsystem import CannonSubsystem
 from subsystems.hornsubsystem import HornSubsystem
@@ -147,6 +148,13 @@ class RobotContainer:
                         self.drive, self.operatorInterface.scaler,
                         self.operatorInterface.chassisControls.rotation),
                     BlinkLight(self.light, 1, 100)))
+
+        commands2.button.POVButton(
+            *self.operatorInterface.pulseTheLights).toggleWhenPressed(
+                ParallelCommandGroup(
+                    PulseLight(self.light, 500, False)
+                )
+            )
 
         # commands2.button.JoystickButton(
         #     *self.operatorInterface.honkControl

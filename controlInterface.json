@@ -1,6 +1,6 @@
 {
-  "drive": "XBOX_DRIVE",
-  "camera": "XBOX_CAMERA",
+  "drive": "PLAYSTATION_DRIVE",
+  "camera": "PLAYSTATION_CAMERA",
   "lightsControlledByCamera": true,
 
   "XBOX_DRIVE_SIM": {
@@ -81,13 +81,13 @@
     "rotation": 2,
     "scaler": 3,
     "lightControl": 4,
+    "horn": 5,
 
     "fieldRelative": 6,
     "resetSwerveControl": 3,
-    "launchCannon": 8, 
-    "fillCannon": 7,
-    "horn": 5,
-    "closeValves": 13,
+    "launchCannon": 10, 
+    "fillCannon": 9,
+    "closeValves": 14,
 
     "setWaypoint": 180,
     "goToWaypoint": 0
@@ -99,13 +99,13 @@
     "rotation": 2,
     "scaler": 3,
     "lightControl": 4,
+    "horn": 5,
 
     "fieldRelative": 6,
     "resetSwerveControl": 3,
-    "launchCannon": 8, 
-    "fillCannon": 7,
-    "horn": 5,
-    "closeValves": 13,
+    "launchCannon": 10, 
+    "fillCannon": 9,
+    "closeValves": 14,
 
     "setWaypoint": 180,
     "goToWaypoint": 0
@@ -115,25 +115,33 @@
     "leftRight": 0,
     "upDown": 1,
     "light": 2,
-    "horn": 3
+    "horn": 3,
+
+    "pulseTheLights": 270
   },
   "XBOX_CAMERA_DRIVERSTATION": {
     "leftRight": 0,
     "upDown": 1,
     "light": 2,
-    "horn": 3
+    "horn": 3,
+    
+    "pulseTheLights": 270
   },
   
   "PLAYSTATION_CAMERA_SIM": {
     "leftRight": 0,
     "upDown": 1,
     "light": 3,
-    "horn": 4
+    "horn": 4,
+
+    "pulseTheLights": 270
   },
   "PLAYSTATION_CAMERA_DRIVERSTATION": {
     "leftRight": 0,
     "upDown": 1,
     "light": 3,
-    "horn": 4
+    "horn": 4,
+
+    "pulseTheLights": 270
   }
 }
