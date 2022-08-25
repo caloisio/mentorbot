@@ -32,6 +32,7 @@ from commands.setreturn import SetReturn
 from subsystems.drivesubsystem import DriveSubsystem
 
 from operatorinterface import OperatorInterface
+from subsystems.systemlog import SystemLogSubsystem
 
 
 class RobotContainer:
@@ -53,6 +54,7 @@ class RobotContainer:
         self.cannon = CannonSubsystem()
         self.light = LightSubsystem()
         self.horn = HornSubsystem()
+        self.log = SystemLogSubsystem()
 
         # compressor
         self.compressor = Compressor(
