@@ -70,10 +70,16 @@ Code for the FRC 1757 teaching platform robot
 * **IMPORTANT: Perform ALL operations in a python virtualenv**
 #### Create virtualenv (if not previously done)
 Recommend placing the virtualenv in the `mentorbot` repo folder under `.venv` (to keep everything together) however the virtualenv is local to your system and should not be uploaded (ignored in `.gitignore`)
-```bash
-cd <path-to-mentorbot-repo>
-py -3 -m venv ./.venv
-```
+* powershell
+  ```powershell
+  cd <path-to-mentorbot-repo>
+  py -3 -m venv ./.venv
+  ```
+* bash
+  ```bash
+  cd <path-to-mentorbot-repo>
+  python -m venv ./.venv
+  ```
 #### Workflow
 1. **Activate virtualenv**
    (Virtualenv activation may differ depending on your operating system and terminal)
